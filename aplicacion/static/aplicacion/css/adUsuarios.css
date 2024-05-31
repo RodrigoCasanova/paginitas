@@ -1,0 +1,32 @@
+body {
+    background-color: #121212;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+h1 {
+    text-align: center;
+    color: #03DAC6;
+}
+
+.btn-primary {
+    background-color: #03DAC6;
+    border-color: #03DAC6;
+}
+
+.btn-primary:hover {
+    background-color: #02C2B8;
+    border-color: #02C2B8;
+}
+
+.table th,
+.table td {
+    border-color: #03DAC6;
+}

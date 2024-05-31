@@ -1,0 +1,135 @@
+   /* Estilos CSS */
+   body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+h1 {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    max-width: 150px;
+    /* Ancho máximo de las celdas */
+    word-wrap: break-word;
+    /* Permitir que el texto se ajuste y se envuelva */
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    /* Asegura que la imagen no tenga bordes adicionales */
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.quantity-input {
+    width: 40px;
+    text-align: center;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.total-clp {
+    font-weight: bold;
+}
+
+.delete-icon {
+    color: #ff0000;
+    cursor: pointer;
+}
+
+#discountCode {
+    width: 100%;
+    max-width: 200px;
+    padding: 8px;
+    font-size: 1rem;
+}
+
+#applyDiscountBtn {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.action-button {
+    flex: 1 1 45%;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+@media only screen and (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-button {
+        width: 100%;
+    }
+
+    th,
+    td {
+        max-width: none;
+        /* Elimina el ancho máximo para las celdas en pantallas pequeñas */
+    }
+}

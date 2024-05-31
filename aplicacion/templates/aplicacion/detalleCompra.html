@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Compra</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Font Awesome para los iconos -->
+    <link rel="stylesheet" href="{% static 'aplicacion/css/detalleCompra.css' %}"> 
+</head>
+
+<body>
+    <div class="container">
+        <h1>Detalle de Compra</h1>
+        <p><strong>Codigo de Pedido:</strong> #123456</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario (CLP)</th>
+                    <th>Total (CLP)</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="{% static 'aplicacion/img/coload.webp' %}" alt="Producto 1" class="product-image"></td>
+                    <td>Camiseta de Colo Colo 2023 XL</td>
+                    <td class="quantity-control">
+                        <button class="quantity-btn" onclick="decrementQuantity(this)">-</button>
+                        <input type="text" value="2" class="quantity-input" onchange="updateTotalPrice(this)"
+                            readonly />
+                        <button class="quantity-btn" onclick="incrementQuantity(this)">+</button>
+                    </td>
+                    <td>$60.000</td>
+                    <td class="total-clp">$120.000</td>
+                    <td><i class="fas fa-trash delete-icon" onclick="deleteRow(this)"></i></td>
+                </tr>
+                <tr>
+                    <td><img src="{% static 'aplicacion/img/coload.webp' %}" alt="Producto 1" class="product-image"></td>
+                    <td>Camiseta de Colo Colo 2023 S</td>
+                    <td class="quantity-control">
+                        <button class="quantity-btn" onclick="decrementQuantity(this)">-</button>
+                        <input type="text" value="1" class="quantity-input" onchange="updateTotalPrice(this)"
+                            readonly />
+                        <button class="quantity-btn" onclick="incrementQuantity(this)">+</button>
+                    </td>
+                    <td>$60.000</td>
+                    <td class="total-clp">$60.000</td>
+                    <td><i class="fas fa-trash delete-icon" onclick="deleteRow(this)"></i></td>
+                </tr>
+                <tr>
+                    <td><img src="{% static 'aplicacion/img/argentina.jpg' %}" alt="Producto 2" class="product-image"></td>
+                    <td>Camiseta de Argentina Messi</td>
+                    <td class="quantity-control">
+                        <button class="quantity-btn" onclick="decrementQuantity(this)">-</button>
+                        <input type="text" value="1" class="quantity-input" onchange="updateTotalPrice(this)"
+                            readonly />
+                        <button class="quantity-btn" onclick="incrementQuantity(this)">+</button>
+                    </td>
+                    <td>$60.000</td>
+                    <td class="total-clp">$60.000</td>
+                    <td><i class="fas fa-trash delete-icon" onclick="deleteRow(this)"></i></td>
+                </tr>
+                <!-- Agrega más filas según sea necesario -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align: right;"><strong>Codigo de Descuento:</strong></td>
+                    <td colspan="2">
+                        <input type="text" id="discountCode" placeholder="Ingrese código">
+                        <button id="applyDiscountBtn" onclick="applyDiscount()">Aplicar Descuento</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
+                    <td id="totalPrice">$240.000</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="action-buttons">
+            <a href="{% url "TiendaOnline" %}"><button class="action-button">Volver a la Tienda</button></a>
+            <a href="{% url "Envio" %}"><button class="action-button">Comprobar Envío</button></a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <!-- Font Awesome JS para los iconos -->
+
+    <script src="{% static 'aplicacion/js/detallecompra.js' %}"></script>
+</body>
+
+</html>

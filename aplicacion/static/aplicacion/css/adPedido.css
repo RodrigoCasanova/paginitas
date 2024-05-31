@@ -1,0 +1,53 @@
+body {
+    background-image: url('https://source.unsplash.com/1600x900/?travel');
+    background-size: cover;
+    color: #212529;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .container {
+    padding: 30px;
+  }
+
+  .card {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    text-align: center;
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 10px 20px; 
+    border-radius: 10px; 
+  }
+
+  .status {
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+
+  .btn-custom {
+    background-color: #03DAC6;
+    border-color: #03DAC6;
+  }
+
+  .btn-custom:hover {
+    background-color: #02C2B8;
+    border-color: #02C2B8;
+  }
+
+
+  .status.entregado {
+    color: #28a745; 
+  }
+
+  .status.en_camino {
+    color: #ffc107; 
+  }
+
+  .status.cancelado {
+    color: #dc3545; 
+  }

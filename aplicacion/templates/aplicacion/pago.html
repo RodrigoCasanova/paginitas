@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Pago</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'aplicacion/css/pago.css' %}"> 
+</head>
+
+<body>
+    <div class="container">
+        <h2>Página de Pago</h2>
+        <form>
+            <div class="form-group">
+                <label for="card-holder-name">Nombre del Titular de la Tarjeta</label>
+                <input type="text" id="card-holder-name" placeholder="Nombre y Apellido" required onkeypress="validateKeyPress(event)">
+            </div>
+            
+            <div class="form-group">
+                <label for="card-number">Número de Tarjeta</label>
+                <input type="text" id="card-number" placeholder="Número de Tarjeta" required>
+            </div>
+            <div class="form-group">
+                <label for="expiry-date">Fecha de Expiración (MM/YY)</label>
+                <input type="text" id="expiry-date" placeholder="MM/YY" required>
+            </div>
+            <div class="form-group">
+                <label for="cvc">CVC</label>
+                <input type="text" id="cvc" placeholder="CVC" maxlength="3" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Dirección de Facturación</label>
+                <input type="text" id="address" placeholder="Dirección de facturación" required>
+            </div>
+            <button type="button" onclick="validateForm()">Pagar</button>
+            <div class="payment-icons">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+                <i class="fab fa-cc-discover"></i>
+            </div>
+            <div id="error-message" class="error-message"></div>
+            <div id="success-message" class="success-message"></div>
+            <div class="btn-group" style="margin-top: 20px;">
+                <a href="{% url "TiendaOnline" %}" class="btn btn-primary">Volver</a>
+                <a href="{% url "inicio" %}" class="btn btn-primary">Cerrar Sesión</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static 'aplicacion/js/pago.js' %}"></script>
+    
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+body {
+    background-color: #000;
+    color: #fff;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.form-label {
+    color: #fff;
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #03DAC6;
+    border-color: #03DAC6;
+}
+
+.btn-primary:hover {
+    background-color: #02C2B8;
+    border-color: #02C2B8;
+}
+
+.form-check-label {
+    color: #fff;
+}
+
+
+.valid-feedback {
+    display: none; 
+    color: #03DAC6;
+}
+
+.invalid-feedback {
+    display: none;
+    color: #FF6B6B;
+}
+
+.form-check-input:invalid ~ .invalid-feedback {
+    display: block; 
+}
+
+.was-validated .form-check-input:valid ~ .valid-feedback {
+    display: block; 
+}
