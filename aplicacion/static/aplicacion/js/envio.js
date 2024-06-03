@@ -94,7 +94,7 @@ document.getElementById('formularioEnvio').addEventListener('submit', function (
     }
 });
 function irAPagar() {
-    window.location.href = 'pago.html';
+    window.location.href = 'pago/';
 }
 function scrollToAlerta() {
     const alertaElement = document.getElementById("alerta");

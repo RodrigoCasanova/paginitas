@@ -15,7 +15,7 @@
     <div class="container mt-3">
         <h3>INICIO DE SESION</h3>
 
-        <form action="TiendaOnline.html" class="was-validated">
+        <form action="{% url "TiendaOnline" %}" class="was-validated">
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Email:</label>
                 <input type="email" class="form-control" id="email" placeholder="Enter username" name="email" required>

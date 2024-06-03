@@ -10,7 +10,7 @@ class Registro(models.Model):
 
 class TiendaOnline(models.Model):
     nombreCamiseta = models.CharField(max_length=100, null=False)  
-    imagen = models.ImageField()
+    imagen = models.ImageField(upload_to='personas', null=True)
     precio = models.IntegerField()
     cantidad = models.IntegerField()
 
