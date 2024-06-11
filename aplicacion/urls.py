@@ -1,9 +1,9 @@
-from .views import inicio,InicioSesion,admin,adPedidos,adTienda,adUsuarios,adVentas,detalleCompra,Envio,factura,mispedidos,pago,perfilusuario,Registro,TiendaOnline
+from .views import inicio,iniciosesion,admin,adPedidos,adTienda,adUsuarios,adVentas,detalleCompra,Envio,factura,mispedidos,pago,perfilusuario,Registro,TiendaOnline
 from django.urls import include, path
 
 urlpatterns = [
     path('',inicio,name='inicio'),
-    path('inicioSesion/',InicioSesion,name='inicioSesion'),
+    path('inicioSesion/',iniciosesion,name='inicioSesion'),
     path('admin1/',admin,name='admin'),
     path('adPedidos/',adPedidos,name='adPedidos'),
     path('adTienda/',adTienda,name='adTienda'),

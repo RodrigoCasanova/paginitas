@@ -10,22 +10,25 @@
 <body>
   <div class="container">
     <h2>Registro de Usuario</h2>
-    <form action="iniciosesion" method="get">
+    <form action="{% url 'inicioSesion' %}" method="POST">
+      {% csrf_token %}
+  
       <label for="nombre">Nombre:</label>
       <input type="text" id="nombre" name="nombre" required pattern="[a-zA-Z ]{2,254}">
-
+  
       <label for="apellido">Apellido:</label>
       <input type="text" id="apellido" name="apellido" required pattern="[a-zA-Z ]{2,254}">
-
+  
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" required>
-
+  
       <label for="contrasena">Contraseña:</label>
       <input type="password" id="contrasena" name="contrasena" required>
-
-      <input type="submit" value="Registrarse">
+  
+      <input type="submit" value="Modificar" class="btn btn-warning btn sm">
       <a href="{% url "inicio" %}" class="btn">Volver</a>
-    </form>
+  </form>
+      
   </div>
 </body>
 </html>
