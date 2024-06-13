@@ -16,13 +16,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="TiendaOnline.html">Tienda Online</a>
+                        <a class="nav-link active" href="{% url 'TiendaOnline' %}">Tienda Online</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{% static 'aplicacion/img/usu.png' %}" alt="Perfil" style="width: 30px; height: 30px;">
+                            <img src="{% static 'aplicacion/img/usu.png' %}" alt="Perfil" style="width: 30px; height: 30px;" id="profile-image">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="{% url 'mispedidos' %}">Mis Pedidos</a></li>
@@ -36,7 +36,7 @@
 
     <div class="container" style="margin-top: 80px;">
         <h1>Mi Perfil</h1>
-        <img src="{% static 'aplicacion/img/king.avif' %}" alt="Mi Foto de Perfil" class="profile-img">
+        <img src="{% static 'aplicacion/img/king.avif' %}" alt="Mi Foto de Perfil" class="profile-img" id="avatar-preview">
         <div class="info">
             <form id="perfil-form">
                 <div class="mb-3">
@@ -55,27 +55,39 @@
                     <label for="email" class="form-label">Correo Electrónico:</label>
                     <input type="email" class="form-control" id="email" value="usuario1@example.com" disabled>
                 </div>
-                <!-- Campos para cambiar la contraseña -->
-                <div class="mb-3" id="password-fields" style="display: none;">
-                    <label for="contraseña-antigua" class="form-label">Contraseña Antigua:</label>
-                    <input type="password" class="form-control" id="contraseña-antigua" disabled>
+                <!-- Campo para cargar nueva imagen de perfil -->
+                <div class="mb-3">
+                    <label for="avatar" class="form-label">Cambiar Imagen de Perfil:</label>
+                    <input type="file" class="form-control" id="avatar" accept="image/*">
                 </div>
-                <div class="mb-3" id="new-password-fields" style="display: none;">
-                    <label for="contraseña-nueva" class="form-label">Contraseña Nueva:</label>
-                    <input type="password" class="form-control" id="contraseña-nueva" disabled>
+                <!-- Fin campo para cargar nueva imagen de perfil -->
+                
+                <!-- Botón y campos para cambiar la contraseña -->
+                <div id="password-fields" style="display: none;">
+                    <div class="mb-3">
+                        <label for="contraseña-antigua" class="form-label">Contraseña Antigua:</label>
+                        <input type="password" class="form-control" id="contraseña-antigua" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contraseña-nueva" class="form-label">Contraseña Nueva:</label>
+                        <input type="password" class="form-control" id="contraseña-nueva" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmar-contraseña" class="form-label">Confirmar Contraseña Nueva:</label>
+                        <input type="password" class="form-control" id="confirmar-contraseña" disabled>
+                    </div>
                 </div>
-                <div class="mb-3" id="confirm-password-fields" style="display: none;">
-                    <label for="confirmar-contraseña" class="form-label">Confirmar Contraseña Nueva:</label>
-                    <input type="password" class="form-control" id="confirmar-contraseña" disabled>
-                </div>
+                <!-- Fin campos para cambiar la contraseña -->
+                
                 <button type="button" class="btn btn-primary" id="editar-btn">Editar</button>
                 <button type="submit" class="btn btn-success d-none" id="guardar-btn">Guardar Cambios</button>
                 <button type="button" class="btn btn-secondary d-none" id="cancelar-btn">Cancelar</button>
+                <button type="button" class="btn btn-secondary d-none" id="cambiar-contraseña-btn">Cambiar Contraseña</button>
+                <!-- Mensaje de éxito oculto -->
+                <div class="alert alert-success mt-3 d-none" id="exito-msg" role="alert">
+                    Cambios guardados con éxito.
+                </div>
             </form>
-            <!-- Mensaje de éxito oculto -->
-            <div class="alert alert-success mt-3 d-none" id="exito-msg" role="alert">
-                Cambios guardados con éxito.
-            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
