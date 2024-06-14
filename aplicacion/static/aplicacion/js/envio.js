@@ -93,8 +93,11 @@ document.getElementById('formularioEnvio').addEventListener('submit', function (
         alert('Por favor, completa todos los campos del formulario.');
     }
 });
+const pagoUrl = document.getElementById('data-url').dataset.pagoUrl;
+
+// Función para redirigir a la página de pago
 function irAPagar() {
-    window.location.href = 'pago/';
+    window.location.href = pagoUrl;
 }
 function scrollToAlerta() {
     const alertaElement = document.getElementById("alerta");
