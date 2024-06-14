@@ -9,8 +9,6 @@ class Registro(models.Model):
     contraseña = models.CharField(max_length=20, null=False) 
 
 class TiendaOnline(models.Model):
-    nombreCamiseta = models.CharField(max_length=100, null=False)  
-    imagen = models.ImageField(upload_to='personas', null=True)
     precio = models.IntegerField()
     cantidad = models.IntegerField()
 
@@ -18,6 +16,7 @@ class TiendaOnline(models.Model):
 class perfilusuario(models.Model):
     edad = models.IntegerField()
     ubicacion = models.CharField(max_length=50)
+    imagen = models.ImageField()
 
 class detalleCompra(models.Model):
     cod_pedido = models.IntegerField()
