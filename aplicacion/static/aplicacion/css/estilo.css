@@ -1,125 +1,170 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&family=Titillium+Web:wght@200;300;400;600;700&display=swap');
-
+/* Estilos generales */
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Open Sans';
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif; /* Fuente predeterminada */
 }
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.producto {
+    margin-bottom: 30px;
+}
+
+.producto .card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.producto .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+.producto img {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.producto .card-body {
+    text-align: center;
+}
+
+.producto .btn {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 20px;
+    background-color: #007bff;
+    color: #fff;
+}
+
+.carrito-icon {
+    color: #007bff;
+}
+
+.admin-btn {
+    background-color: #03DAC6;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.admin-btn:hover {
+    background-color: #02C2B8;
+}
+
+/* Estilos para la barra de navegación */
+.navbar {
+    background-color: #343a40;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #17a2b8;
+}
+
+/* Estilos para la sección de encabezado */
 header {
     position: relative;
-    background: url(imgcss/hometop.jpg);
-    background-size: contain;
-    background-repeat: no-repeat;
+    background: url('imgcss/hometop.jpg');
+    background-size: cover;
     background-position: center;
     height: 300px;
-    width: 100%;
-    /* Asegura que el ancho del header sea igual al ancho de la ventana */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 2rem;
 }
-
 
 @media (max-width: 768px) {
     header {
         height: 200px;
-        /* Cambia la altura del header en pantallas más pequeñas si es necesario */
     }
 }
 
-header h1 {
-    text-align: center;
-    font-size: 35px;
-    /* background-color: #000; */
-    color: #fff;
-    padding: 30px 0;
-}
-
-.container {
-    width: 300px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.3);
-    /* Color de fondo con transparencia */
-    border-radius: 10px;
-    text-align: center;
-}
-
-h1 {
-    color: #fff;
-    /* Color del texto */
-    background-color: #007bff;
-    /* Color de fondo del título */
-    padding: 10px 0;
-    /* Espaciado interno del título */
-    border-radius: 5px;
-    /* Borde redondeado */
-}
-
+/* Estilos para el contenedor principal */
 .contenedor {
     max-width: 1200px;
-    padding: 10px;
     margin: auto;
-    display: flex;
-    justify-content: space-between;
-    /* oculto lo que queda fuera del .contenedor */
-    contain: paint;
+    padding: 20px;
 }
 
-/* SECCION CONTENEDOR DE ITEMS */
+/* Estilos para los items de camisetas */
 .contenedor .contenedor-items {
     margin-top: 30px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     grid-gap: 30px;
-    grid-row-gap: 30px;
-    /* width: 60%; */
-    width: 100%;
-    transition: .3s;
 }
 
 .contenedor .contenedor-items .item {
-    max-width: 200px;
-    margin: auto;
-    border: 1px solid #666;
+    width: 100%;
+    max-width: 220px;
+    border: 1px solid #ccc;
     border-radius: 10px;
-    padding: 20px;
-    transition: .3s;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .contenedor .contenedor-items .item .img-item {
-    width: 100%;
+    width: 300px;
+    height: 300px;
+    object-fit: cover; /* Ajusta el tamaño sin distorsionar la imagen */
+    border-radius: 10px; /* Opcional: añade bordes redondeados */
 }
 
 .contenedor .contenedor-items .item:hover {
-    box-shadow: 0 0 10px #666;
-    scale: 1.05;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .contenedor .contenedor-items .item .titulo-item {
-    display: block;
-    font-weight: bold;
     text-align: center;
-    text-transform: uppercase;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 .contenedor .contenedor-items .item .precio-item {
-    display: block;
     text-align: center;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 18px;
+    margin-top: 5px;
 }
 
 .contenedor .contenedor-items .item .boton-item {
     display: block;
     margin: 10px auto;
+    padding: 8px 16px;
     border: none;
-    background-color: black;
+    background-color: #007bff;
     color: #fff;
-    padding: 5px 15px;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-/* seccion carrito */
+.contenedor .contenedor-items .item .boton-item:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para el carrito */
 .carrito {
     border: 1px solid #666;
     width: 35%;
@@ -130,7 +175,6 @@ h1 {
     position: sticky !important;
     top: 0;
     transition: .3s;
-    /* Estilos para ocultar */
     margin-right: -100%;
     opacity: 0;
 }
@@ -263,7 +307,6 @@ h1 {
         width: 100%;
     }
 }
-  
 
 #locationData {
     position: absolute;
@@ -274,6 +317,7 @@ h1 {
     padding: 5px 10px;
     border-radius: 5px;
 }
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;

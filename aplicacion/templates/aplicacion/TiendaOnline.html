@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +16,6 @@
     <script src='{% static "aplicacion/js/app.js" %}' async></script> <!-- Corregida la ruta del archivo JavaScript -->
     <title>TheKeyFutbol | </title>
 </head>
-
 <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <div class="container-fluid">
@@ -50,15 +48,21 @@
             </div>
         </div>
     </nav>    
+
+    <header class="p-3 bg-dark text-white">
+        <div id="locationData"></div>
+    </header>
+
     <section class="contenedor">
         <div class="contenedor-items">
+            {% for camiseta in camisetas %}
             <div class="item">
-                <span class="titulo-item">Camiseta Colo Colo 2024</span>
-                <img src='{% static "aplicacion/img/coload.webp" %}' alt="" class="img-item">
-                <span class="precio-item">$60.000</span>
+                <span class="titulo-item">{{ camiseta.nombre }}</span>
+                <img src="{{ camiseta.imagen.url }}" alt="" class="img-item">
+                <span class="precio-item">${{ camiseta.precio }}</span>
                 <div class="form-group">
-                    <label for="talla-colo-colo">Selecciona la talla:</label>
-                    <select class="form-control" id="talla-colo-colo">
+                    <label for="talla-{{ camiseta.id }}">Selecciona la talla:</label>
+                    <select class="form-control" id="talla-{{ camiseta.id }}">
                         <option value="s">S</option>
                         <option value="m">M</option>
                         <option value="l">L</option>
@@ -67,147 +71,33 @@
                 </div>
                 <button class="boton-item">Agregar al Carrito</button>
             </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de U de Chiste</span>  
-                <img src='{% static "aplicacion/img/udechiste.jpg" %}' alt="" class="img-item">
-                <span class="precio-item">$1</span>
-                <div class="form-group">
-                    <label for="talla-u-chiste">Selecciona la talla:</label>
-                    <select class="form-control" id="talla-u-chiste">
-                        <option value="s">S</option>
-                        <option value="m">M</option>
-                        <option value="l">L</option>
-                        <option value="xl">XL</option>
-                    </select>
-                </div>
-                <button class="boton-item">Agregar al Carrito</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta Argentina Messi</span>
-                <img src='{% static "aplicacion/img/argentina.jpg" %}' alt="" class="img-item">
-                <span class="precio-item">$60.000</span>
-                <div class="form-group">
-                    <label for="talla-argentina">Selecciona la talla:</label>
-                    <select class="form-control" id="talla-argentina">
-                        <option value="s">S</option>
-                        <option value="m">M</option>
-                        <option value="l">L</option>
-                        <option value="xl">XL</option>
-                    </select>
-                </div>
-                <button class="boton-item">Agregar al Carrito</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Real Madrid Monicius</span>
-                <img src='{% static "aplicacion/img/real_madrid.png" %}' alt="" class="img-item">
-                <span class="precio-item">$80.000</span>
-                <div class="form-group">
-                    <label for="talla-vardrid">Selecciona la talla:</label>
-                    <select class="form-control" id="talla-vardrid">
-                        <option value="s">S</option>
-                        <option value="m">M</option>
-                        <option value="l">L</option>
-                        <option value="xl">XL</option>
-                    </select>
-                </div>
-                <button class="boton-item">Agregar al Carrito</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Manchester City</span>
-                <img src='{% static "aplicacion/img/manchester.jpg" %}' alt="" class="img-item">
-                <span class="precio-item">$79.990</span>
-                <div class="form-group">
-                    <label for="talla-city">Selecciona la talla:</label>
-                    <select class="form-control" id="talla-city">
-                        <option value="s">S</option>
-                        <option value="m">M</option>
-                        <option value="l">L</option>
-                        <option value="xl">XL</option>
-                    </select>
-                </div>
-                <button class="boton-item">Agregar al Carrito</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Arsenal G.jesus</span>
-                <img src='{% static "aplicacion/img/arsenal.jpg" %}' alt="" class="img-item">
-                <span class="precio-item">$79.990</span>
-                <div class="form-group">
-                    <label for="talla-arsenal">Selecciona la talla:</label>
-                    <select class="form-control" id="talla-arsenal">
-                        <option value="s">S</option>
-                        <option value="m">M</option>
-                        <option value="l">L</option>
-                        <option value="xl">XL</option>
-                    </select>
-                </div>
-                <button class="boton-item">Agregar al Carrito</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Barcelona</span>
-                <img src='{% static "aplicacion/img/barca1.jpg" %}' alt="" class="img-item">
-                <span class="precio-item">$79.990</span>
-                <div class="form-group">
-                    <label for="talla-barca">Selecciona la talla:</label>
-                    <select class="form-control" id="talla-barca">
-                        <option value="s">S</option>
-                        <option value="m">M</option>
-                        <option value="l">L</option>
-                        <option value="xl">XL</option>
-                    </select>
-                </div>
-                <button class="boton-item">Agregar al Carrito</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Inter Barella</span>
-                <img src='{% static "aplicacion/img/inter.jpg" %}' alt="" class="img-item">
-                <span class="precio-item">$79.990</span>
-                <div class="form-group">
-                    <label for="talla-inter">Selecciona la talla:</label>
-                    <select class="form-control" id="talla-inter">
-                        <option value="s">S</option>
-                        <option value="m">M</option>
-                        <option value="l">L</option>
-                        <option value="xl">XL</option>
-                    </select>
-                </div>
-                <button class="boton-item">Agregar al Carrito</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Juventus</span>
-                <img src='{% static "aplicacion/img/juve.jpg" %}' alt="" class="img-item">
-                <span class="precio-item">$79.990</span>
-                <div class="form-group">
-                    <label for="talla-juve">Selecciona la talla:</label>
-                    <select class="form-control" id="talla-juve">
-                        <option value="s">S</option>
-                        <option value="m">M</option>
-                        <option value="l">L</option>
-                        <option value="xl">XL</option>
-                    </select>
-                </div>
-                <button class="boton-item">Agregar al Carrito</button>
-            </div>
+            {% endfor %}
         </div>
+
         <div class="carrito" id="carrito">
             <div class="header-carrito">
                 <h2>Tu Carrito</h2>
             </div>
 
             <div class="carrito-items">
+                <!-- Aquí se mostrarán los ítems del carrito -->
             </div>
+
             <div class="carrito-total">
                 <div class="fila">
                     <strong>Tu Total</strong>
                     <span class="carrito-precio-total">
-                        $120.000,00
+                        $0.00
                     </span>
                 </div>
-                <a href="{% url "detalleCompra" %}"><button class="btn-pagar">Pagar <i class="fa-solid fa-bag-shopping"></i> </button></a>
+                <a href="{% url 'detalleCompra' %}">
+                    <button class="btn-pagar">Pagar <i class="fa-solid fa-bag-shopping"></i> </button>
+                </a>
             </div>
         </div>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 </html>

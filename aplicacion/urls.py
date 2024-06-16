@@ -1,4 +1,4 @@
-from .views import inicio,iniciosesion,admin,adPedidos,adTienda,adUsuarios,adVentas,detalleCompra,Envio,factura,mispedidos,pago,perfilusuario,Registro,TiendaOnline
+from .views import inicio,iniciosesion,admin,adPedidos,adTienda,adUsuarios,adVentas,detalleCompra,Envio,factura,mispedidos,pago,perfilusuario,Registro,TiendaOnline,agregarcamiseta,editarcamiseta,eliminarcamiseta
 from django.urls import include, path
 
 urlpatterns = [
@@ -17,4 +17,11 @@ urlpatterns = [
     path('perfilusuario/',perfilusuario,name='perfilusuario'),
     path('Registro/',Registro,name='Registro'),
     path('TiendaOnline/',TiendaOnline,name='TiendaOnline'),
+    path('agregarcamiseta/',agregarcamiseta,name='agregarcamiseta'),
+     path('editarcamiseta/<int:id>/', editarcamiseta, name='editarcamiseta'),
+    path('eliminarcamiseta/<int:id>/', eliminarcamiseta, name='eliminarcamiseta'),
+    
+
+    
+
 ]

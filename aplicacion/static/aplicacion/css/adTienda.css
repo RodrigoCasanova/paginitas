@@ -106,3 +106,16 @@ body {
     color: #fff;
     cursor: pointer;
 }
+
+@media (max-width: 768px) {
+    header {
+        height: 200px;
+    }
+}
+
+/* Estilos para el contenedor principal */
+.contenedor {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}

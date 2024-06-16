@@ -16,7 +16,7 @@ class TiendaOnline(models.Model):
 class perfilusuario(models.Model):
     edad = models.IntegerField()
     ubicacion = models.CharField(max_length=50)
-    imagen = models.ImageField()
+    imagen = models.ImageField(upload_to='perfilusuario')
 
 class detalleCompra(models.Model):
     cod_pedido = models.IntegerField()
@@ -49,6 +49,16 @@ class adPedidos(models.Model):
 class adVentas(models.Model):
     ventas = models.IntegerField()
     mes = models.CharField(max_length=20)   
+
+class Camiseta(models.Model):
+    id = models.IntegerField(primary_key=True, null=False)
+    nombre = models.CharField(max_length=100)
+    imagen = models.ImageField(upload_to='adTienda')
+    precio = models.DecimalField(max_digits=8, decimal_places=0)
+    tallas = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre    
  
 
            

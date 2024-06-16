@@ -1,4 +1,129 @@
-{% load static %}
+    {% comment %} {% load static %}
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+            integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="{% static 'aplicacion/css/estilo.css' %}">
+        <link rel="stylesheet" href="{% static 'aplicacion/css/adTienda.css' %}">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url "admin" %}">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "agregarcamiseta" %}" onclick="mostrarFormulario()">Agregar Camiseta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "editarcamiseta" %}" onclick="mostrarFormulario()">Editar Camiseta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "eliminarcamiseta" %}" onclick="mostrarFormulario()">Eliminar Camiseta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "inicio" %}">Cerrar Sesion</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <header class="p-3 bg-dark text-white">
+        </header>
+        <section class="contenedor">
+
+            <div class="contenedor-items" id="contenedorItems">
+                <div class="item">
+                    <span class="titulo-item">Camiseta Colo Colo 2024</span>
+                    <img src="{% static 'aplicacion/img/coload.webp' %}" alt="Camiseta Colo Colo 2024" class="img-item">
+                    <span class="precio-item">$60.000</span>
+                    <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
+                </div>
+                <div class="item">
+                    <span class="titulo-item">Camiseta de Universidad de Chiste</span>
+                    <img src="{% static 'aplicacion/img/udechiste.jpg' %}" alt="Camiseta de Universidad de Chiste" class="img-item">
+                    <span class="precio-item">$1</span>
+                    <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
+                </div>
+                <div class="item">
+                    <span class="titulo-item">Camiseta Argentina Messi</span>
+                    <img src="{% static 'aplicacion/img/argentina.jpg' %}" alt="Camiseta Argentina Messi" class="img-item">
+                    <span class="precio-item">$60.000</span>
+                    <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
+                </div>
+                <div class="item">
+                    <span class="titulo-item">Camiseta de Real Madrid Monicius</span>
+                    <img src="{% static 'aplicacion/img/real_madrid.png' %}" alt="Camiseta de Real Madrid Monicius" class="img-item">
+                    <span class="precio-item">$80.000</span>
+                    <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
+                </div>
+                <div class="item">
+                    <span class="titulo-item">Camiseta de Manchester City</span>
+                    <img src="{% static 'aplicacion/img/manchester.jpg' %}" alt="Camiseta de Manchester City" class="img-item">
+                    <span class="precio-item">$79.990</span>
+                    <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
+                </div>
+                <div class="item">
+                    <span class="titulo-item">Camiseta de Arsenal Gabriel Jesus</span>
+                    <img src="{% static 'aplicacion/img/arsenal.jpg' %}" alt="Camiseta de Arsenal Gabriel Jesus" class="img-item">
+                    <span class="precio-item">$79.990</span>
+                    <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
+                </div>
+                <div class="item">
+                    <span class="titulo-item">Camiseta de Barcelona</span>
+                    <img src="{% static 'aplicacion/img/barca1.jpg' %}" alt="Camiseta de Barcelona" class="img-item">
+                    <span class="precio-item">$79.990</span>
+                    <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
+                </div>
+                <div class="item">
+                    <span class="titulo-item">Camiseta de Inter Barella</span>
+                    <img src="{% static 'aplicacion/img/inter.jpg' %}" alt="Camiseta de Inter Barella" class="img-item">
+                    <span class="precio-item">$79.990</span>
+                    <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
+                </div>
+                <div class="item">
+                    <span class="titulo-item">Camiseta de Juventus</span>
+                    <img src="{% static 'aplicacion/img/juve.jpg' %}" alt="Camiseta de Juventus" class="img-item">
+                    <span class="precio-item">$79.990</span>
+                    <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
+                </div>
+            </div>
+        </section>
+        <div class="form-container" id="formularioEditar" style="display: none;">
+            <h2>Editar Camiseta</h2>
+            <form id="formularioEdicion">
+                <div class="form-group">
+                    <label for="editNombre">Nombre:</label>
+                    <input type="text" id="editNombre" name="editNombre" pattern="[A-Za-z]+" title="Solo se permiten letras" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPrecio">Precio:</label>
+                    <input type="number" id="editPrecio" name="editPrecio" min="0" required>
+                </div>
+                <input type="hidden" id="editIndex" name="editIndex">
+                <button type="button" onclick="guardarEdicion()" class="btn-submit">Guardar Cambios</button>
+                <button type="button" onclick="eliminarCamisetaDesdeFormulario()" class="btn-submit eliminar">Eliminar</button>
+                <button type="button" onclick="cancelarEdicion()" class="btn-submit">Cancelar</button>
+            </form>
+        </div>
+    </body>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'aplicacion/js/adtienda.js' %}"></script>
+
+    </html> {% endcomment %}
+
+    {% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,128 +138,48 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static 'aplicacion/css/estilo.css' %}">
     <link rel="stylesheet" href="{% static 'aplicacion/css/adTienda.css' %}">
-</head>
-
+</head> 
 <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <div class="container-fluid">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" href="{% url "admin" %}">Admin</a>
+                    <a class="nav-link active" href="{% url 'admin' %}">Admin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="mostrarFormulario()">Agregar Camiseta</a>
+                    <a class="nav-link" href="{% url 'agregarcamiseta' %}">Agregar Camiseta</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url "inicio" %}">Cerrar Sesion</a>
+                    <a class="nav-link" href="{% url 'inicio' %}">Cerrar Sesión</a>
                 </li>
             </ul>
         </div>
     </nav>
     <header class="p-3 bg-dark text-white">
+        <h1 class="text-center">Gestión de Camisetas</h1>
     </header>
-    <section class="contenedor">
+    <section class="contenedor py-5">
         <div class="container">
-            <div class="form-container" id="formularioContainer">
-                <h2>Agregar Nueva Camiseta</h2>
-                <form id="formularioCamiseta">
-                    <div class="form-group">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" pattern="[A-Za-z]+" title="Solo se permiten letras" required>
+            <div class="row">
+                {% for camiseta in camisetas %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ camiseta.imagen.url }}" class="card-img-top" alt="{{ camiseta.nombre }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ camiseta.nombre }}</h5>
+                            <p class="card-text">${{ camiseta.precio }}</p>
+                            <div class="text-center">
+                                <a href="{% url 'editarcamiseta' camiseta.id %}" class="btn btn-primary">Editar</a>
+                                <a href="{% url 'eliminarcamiseta' camiseta.id %}" class="btn btn-danger">Eliminar</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="imagen">Seleccionar imagen:</label>
-                        <input type="file" id="imagen" name="imagen" accept="image/*" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="precio">Precio:</label>
-                        <input type="number" id="precio" name="precio" min="0" inputmode="numeric" pattern="[0-9]*" placeholder="$79.990" required>
-                    </div>                   
-                    <div class="form-group">
-                        <label for="tallas">Tallas:</label>
-                        <input type="text" id="tallas" name="tallas" placeholder="S:5, M:1, L:5, XL:10" required>
-                    </div> 
-                    <button type="button" onclick="agregarCamiseta()" class="btn-submit">Agregar Camiseta</button>
-                </form>
-            </div>
-        </div>
-        <div class="contenedor-items" id="contenedorItems">
-            <div class="item">
-                <span class="titulo-item">Camiseta Colo Colo 2024</span>
-                <img src="{% static 'aplicacion/img/coload.webp' %}" alt="Camiseta Colo Colo 2024" class="img-item">
-                <span class="precio-item">$60.000</span>
-                <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Universidad de Chiste</span>
-                <img src="{% static 'aplicacion/img/udechiste.jpg' %}" alt="Camiseta de Universidad de Chiste" class="img-item">
-                <span class="precio-item">$1</span>
-                <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta Argentina Messi</span>
-                <img src="{% static 'aplicacion/img/argentina.jpg' %}" alt="Camiseta Argentina Messi" class="img-item">
-                <span class="precio-item">$60.000</span>
-                <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Real Madrid Monicius</span>
-                <img src="{% static 'aplicacion/img/real_madrid.png' %}" alt="Camiseta de Real Madrid Monicius" class="img-item">
-                <span class="precio-item">$80.000</span>
-                <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Manchester City</span>
-                <img src="{% static 'aplicacion/img/manchester.jpg' %}" alt="Camiseta de Manchester City" class="img-item">
-                <span class="precio-item">$79.990</span>
-                <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Arsenal Gabriel Jesus</span>
-                <img src="{% static 'aplicacion/img/arsenal.jpg' %}" alt="Camiseta de Arsenal Gabriel Jesus" class="img-item">
-                <span class="precio-item">$79.990</span>
-                <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Barcelona</span>
-                <img src="{% static 'aplicacion/img/barca1.jpg' %}" alt="Camiseta de Barcelona" class="img-item">
-                <span class="precio-item">$79.990</span>
-                <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Inter Barella</span>
-                <img src="{% static 'aplicacion/img/inter.jpg' %}" alt="Camiseta de Inter Barella" class="img-item">
-                <span class="precio-item">$79.990</span>
-                <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
-            </div>
-            <div class="item">
-                <span class="titulo-item">Camiseta de Juventus</span>
-                <img src="{% static 'aplicacion/img/juve.jpg' %}" alt="Camiseta de Juventus" class="img-item">
-                <span class="precio-item">$79.990</span>
-                <button class="boton-item" onclick="mostrarFormularioEdicion(0)">Editar</button>
+                </div>                
+                {% endfor %}
             </div>
         </div>
     </section>
-    <div class="form-container" id="formularioEditar" style="display: none;">
-        <h2>Editar Camiseta</h2>
-        <form id="formularioEdicion">
-            <div class="form-group">
-                <label for="editNombre">Nombre:</label>
-                <input type="text" id="editNombre" name="editNombre" pattern="[A-Za-z]+" title="Solo se permiten letras" required>
-            </div>
-            <div class="form-group">
-                <label for="editPrecio">Precio:</label>
-                <input type="number" id="editPrecio" name="editPrecio" min="0" required>
-            </div>
-            <input type="hidden" id="editIndex" name="editIndex">
-            <button type="button" onclick="guardarEdicion()" class="btn-submit">Guardar Cambios</button>
-            <button type="button" onclick="eliminarCamisetaDesdeFormulario()" class="btn-submit eliminar">Eliminar</button>
-            <button type="button" onclick="cancelarEdicion()" class="btn-submit">Cancelar</button>
-        </form>
-    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{% static 'aplicacion/js/adtienda.js' %}"></script>
-
 </html>
