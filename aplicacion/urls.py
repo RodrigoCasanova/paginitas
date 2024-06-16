@@ -18,3 +18,6 @@ urlpatterns = [
     path('Registro/',Registro,name='Registro'),
     path('TiendaOnline/',TiendaOnline,name='TiendaOnline'),
 ]
+
+
+

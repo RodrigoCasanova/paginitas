@@ -1,5 +1,5 @@
 {% load static %}
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -95,4 +95,35 @@
     <script src="{% static 'aplicacion/js/detallecompra.js' %}"></script>
 </body>
 
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Compra</title>
+    <!-- Tus enlaces CSS y JS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Detalle de Compra</h1>
+        <div class="carrito-items">
+            {% for item_carrito in elementos_carrito %}
+            <div class="item">
+                <div class="carrito-item-detalles">
+                    <span class="carrito-item-titulo">{{ item_carrito.item.titulo }}</span>
+                    <div class="selector-cantidad">
+                        <input type="text" value="{{ item_carrito.cantidad }}" class="carrito-item-cantidad" disabled>
+                    </div>
+                    <span class="carrito-item-precio">${{ item_carrito.item.precio }}</span>
+                </div>
+            </div>
+            {% empty %}
+            <p>No hay elementos en el carrito.</p>
+            {% endfor %}
+        </div>
+        <!-- Resto del contenido de la página -->
+    </div>
+</body>
 </html>
+
