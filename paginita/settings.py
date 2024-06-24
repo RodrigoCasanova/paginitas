@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'aplicacion',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +53,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'paginita.urls'
+
+LOGIN_REDIRECT_URL="/"
+
+LOGOUT_REDIRECT_URL="/"
 
 TEMPLATES = [
     {
@@ -67,6 +73,10 @@ TEMPLATES = [
         },
     },
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 WSGI_APPLICATION = 'paginita.wsgi.application'
 
@@ -126,7 +136,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL='media/'
 import os
 MEDIA_ROOT=os.path.join(BASE_DIR, 'aplicacion/media')
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
-AUTH_USER_MODEL = 'aplicacion.Usuario'

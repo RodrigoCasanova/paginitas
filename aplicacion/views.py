@@ -1,29 +1,12 @@
-from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import CarritoItem, Usuario
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
+from .models import CarritoItem
 from django.contrib import messages
+from django.contrib.auth.models import User
+from .forms import CrearCuentaForm
 # Create your views here.
 def inicio(request):
     return render(request, "aplicacion/inicio.html")
-def iniciosesion(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('pswd')
-        
-        user = authenticate(request, email=email, password=password)
-        
-        if user is not None:
-            login(request, user)
-            # Redireccionar al usuario a alguna página de éxito
-            return redirect('TiendaOnline')
-        else:
-            messages.error(request, 'Correo o clave incorrecto. Intente nuevamente.')
-
-    return render(request, 'aplicacion/inicioSesion.html')
 def admin(request):
     return render(request, "aplicacion/admin.html")
 def adPedidos(request):
@@ -45,38 +28,30 @@ def pago(request):
     return render(request, "aplicacion/pago.html")
 def perfilusuario(request):
     return render(request, "aplicacion/perfilusuario.html")
-def Registro(request):
-    if request.method == 'POST':
-        nombre = request.POST.get('nombre')
-        apellido = request.POST.get('apellido')
-        email = request.POST.get('email')
-        contrasena = request.POST.get('contrasena')
-        
-        # Cifrar la contraseña antes de guardarla
-        contrasena_cifrada = make_password(contrasena)
-        
-        # Verificar si el correo electrónico ya está registrado
-        if Usuario.objects.filter(email=email).exists():
-            return render(request, 'aplicacion/registro.html', {
-                'error': 'El correo electrónico ya está registrado.'
-            })
-        
-        try:
-            # Crear un nuevo usuario
-            usuario = Usuario(nombre=nombre, apellido=apellido, email=email)
-            usuario.set_password(contrasena)  # Ciframos la contraseña
-            usuario.save()
-        except IntegrityError:
-            return render(request, 'aplicacion/registro.html', {
-                'error': 'Ha ocurrido un error al registrar el usuario.'
-            })
-        
-        return redirect('inicioSesion')  # Redirigir al usuario a la página de inicio de sesión
+def crearcuenta(request):
+    form=CrearCuentaForm()
+    datos={
+        "form":form
+    }
+    if request.method=="POST":
+        form=CrearCuentaForm(data=request.POST)
+        usr=request.POST["username"]
+        existe=User.objects.filter(username=usr).exists()
+        if existe:
+            alerta="El usuario ya existe"
+            datos={
+                "form":form,
+                "alerta":alerta
+            }
+        else:
+            if form.is_valid():
+                form.save()
+                return redirect(to="login")
+            datos={
+                "form":form
+            }
+    return render(request, "registration/crearcuenta.html", datos)
 
-    return render(request, 'aplicacion/registro.html')
-from django.contrib.auth.decorators import login_required
-
-@login_required
 def TiendaOnline(request):
     return render(request, "aplicacion/TiendaOnline.html")
 
