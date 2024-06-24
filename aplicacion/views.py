@@ -14,7 +14,36 @@ def adTienda(request):
     camisetas = Camiseta.objects.all()
     return render(request, "aplicacion/adTienda.html", {'camisetas': camisetas})
 def adUsuarios(request):
-    return render(request, "aplicacion/adUsuarios.html")
+    usuarios = User.objects.all()
+    return render(request, "aplicacion/adUsuarios.html", {"usuarios": usuarios})
+
+def agregar_usuario(request):
+    if request.method == "POST":
+        username = request.POST.get("nombre")
+        email = request.POST.get("email")
+        password = request.POST.get("contrasena")
+        
+        # Crear un nuevo usuario en la base de datos
+        User.objects.create_user(username=username, email=email, password=password)
+        
+        # Redirigir al panel de administración de usuarios
+        return redirect("adUsuarios")
+    
+    return render(request, "aplicacion/agregar_usuario.html")
+
+def editar_usuario(request, user_id):
+    usuario = get_object_or_404(User, id=user_id)
+    if request.method == "POST":
+        usuario.username = request.POST.get("nombre")
+        usuario.email = request.POST.get("email")
+        usuario.save()
+        return redirect("adUsuarios")
+    return render(request, "aplicacion/editar_usuario.html", {"usuario": usuario})
+
+def eliminar_usuario(request, user_id):
+    usuario = get_object_or_404(User, id=user_id)
+    usuario.delete()
+    return redirect("adUsuarios")
 def adVentas(request):
     return render(request, "aplicacion/adVentas.html")
 def detalleCompra(request):
