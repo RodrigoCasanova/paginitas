@@ -14,7 +14,7 @@
 <body>
     <div class="container">
         <h1>Detalle de Compra</h1>
-        <p><strong>Codigo de Pedido:</strong> #123456</p>
+        <p><strong>Código de Pedido:</strong> #123456</p>
         <table>
             <thead>
                 <tr>
@@ -27,50 +27,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><img src="{% static 'aplicacion/img/coload.webp' %}" alt="Producto 1" class="product-image"></td>
-                    <td>Camiseta de Colo Colo 2023 XL</td>
-                    <td class="quantity-control">
-                        <button class="quantity-btn" onclick="decrementQuantity(this)">-</button>
-                        <input type="text" value="2" class="quantity-input" onchange="updateTotalPrice(this)"
-                            readonly />
-                        <button class="quantity-btn" onclick="incrementQuantity(this)">+</button>
-                    </td>
-                    <td>$60.000</td>
-                    <td class="total-clp">$120.000</td>
-                    <td><i class="fas fa-trash delete-icon" onclick="deleteRow(this)"></i></td>
-                </tr>
-                <tr>
-                    <td><img src="{% static 'aplicacion/img/coload.webp' %}" alt="Producto 1" class="product-image"></td>
-                    <td>Camiseta de Colo Colo 2023 S</td>
-                    <td class="quantity-control">
-                        <button class="quantity-btn" onclick="decrementQuantity(this)">-</button>
-                        <input type="text" value="1" class="quantity-input" onchange="updateTotalPrice(this)"
-                            readonly />
-                        <button class="quantity-btn" onclick="incrementQuantity(this)">+</button>
-                    </td>
-                    <td>$60.000</td>
-                    <td class="total-clp">$60.000</td>
-                    <td><i class="fas fa-trash delete-icon" onclick="deleteRow(this)"></i></td>
-                </tr>
-                <tr>
-                    <td><img src="{% static 'aplicacion/img/argentina.jpg' %}" alt="Producto 2" class="product-image"></td>
-                    <td>Camiseta de Argentina Messi</td>
-                    <td class="quantity-control">
-                        <button class="quantity-btn" onclick="decrementQuantity(this)">-</button>
-                        <input type="text" value="1" class="quantity-input" onchange="updateTotalPrice(this)"
-                            readonly />
-                        <button class="quantity-btn" onclick="incrementQuantity(this)">+</button>
-                    </td>
-                    <td>$60.000</td>
-                    <td class="total-clp">$60.000</td>
-                    <td><i class="fas fa-trash delete-icon" onclick="deleteRow(this)"></i></td>
-                </tr>
-                <!-- Agrega más filas según sea necesario -->
+                <!-- Las filas se llenarán dinámicamente -->
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3" style="text-align: right;"><strong>Codigo de Descuento:</strong></td>
+                    <td colspan="3" style="text-align: right;"><strong>Código de Descuento:</strong></td>
                     <td colspan="2">
                         <input type="text" id="discountCode" placeholder="Ingrese código">
                         <button id="applyDiscountBtn" onclick="applyDiscount()">Aplicar Descuento</button>
@@ -78,21 +39,20 @@
                 </tr>
                 <tr>
                     <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
-                    <td id="totalPrice">$240.000</td>
+                    <td id="totalPrice">$0</td>
                     <td></td>
                 </tr>
             </tfoot>
         </table>
         <div class="action-buttons">
-            <a href="{% url "TiendaOnline" %}"><button class="action-button">Volver a la Tienda</button></a>
-            <a href="{% url "Envio" %}"><button class="action-button">Comprobar Envío</button></a>
+            <a href="{% url 'TiendaOnline' %}"><button class="action-button">Volver a la Tienda</button></a>
+            <a href="{% url 'Envio' %}"><button id="comprobarEnvio" class="action-button">Comprobar Envío</button></a>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
     <!-- Font Awesome JS para los iconos -->
-
-    <script src="{% static 'aplicacion/js/detallecompra.js' %}"></script>
+    <script src="{% static 'aplicacion/js/detalleCompra.js' %}"></script>
 </body>
 
 </html>

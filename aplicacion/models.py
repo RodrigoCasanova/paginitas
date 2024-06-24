@@ -2,15 +2,8 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
-class Registro(models.Model):
-    nombre = models.CharField(max_length=50, null=False)
-    apellido = models.CharField(max_length=50, null=False)
-    email = models.EmailField(error_messages='Ingrese nuevamente', null=False)
-    contraseña = models.CharField(max_length=20, null=False) 
 
 class TiendaOnline(models.Model):
-    nombreCamiseta = models.CharField(max_length=100, null=False)  
-    imagen = models.ImageField(upload_to='personas', null=True)
     precio = models.IntegerField()
     cantidad = models.IntegerField()
 
@@ -50,6 +43,15 @@ class adPedidos(models.Model):
 class adVentas(models.Model):
     ventas = models.IntegerField()
     mes = models.CharField(max_length=20)   
+class Camiseta(models.Model):
+    id = models.IntegerField(primary_key=True, null=False)
+    nombre = models.CharField(max_length=100)
+    imagen = models.ImageField(upload_to='adTienda')
+    precio = models.DecimalField(max_digits=8, decimal_places=0)
+    tallas = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre        
  
 
            

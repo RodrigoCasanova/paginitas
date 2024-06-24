@@ -39,4 +39,3 @@ function generarFactura() {
     let ventanaFactura = window.open("", "_blank");
     ventanaFactura.document.write("<pre>" + factura + "</pre>");
 }
-

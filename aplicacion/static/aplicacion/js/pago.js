@@ -36,4 +36,3 @@ function validateKeyPress(event) {
         event.preventDefault();
     }
 }
-

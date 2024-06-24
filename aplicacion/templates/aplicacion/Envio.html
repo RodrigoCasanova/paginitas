@@ -5,64 +5,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'aplicacion/css/Envio.css' %}"> 
-    <title>Direccion de Envio</title>
+    <title>Página de Envío y Pago</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'aplicacion/css/envio.css' %}">
+    <link rel="stylesheet" href="{% static 'aplicacion/css/pago.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .container {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .col-lg-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding: 0 15px;
+        }
+
+        .detalle-compra {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .producto {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .product-image {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .total {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+        }
+
+        .form-pago {
+            margin-top: 30px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .action-buttons a {
+            margin-left: 10px;
+        }
+
+        /* Estilos específicos para los formularios */
+
+        form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        form .form-group {
+            margin-bottom: 15px;
+        }
+
+        form label {
+            font-weight: bold;
+        }
+
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="tel"],
+        form select,
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            /* Eliminar el outline */
+            outline: none;
+        }
+
+        form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        form .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        form .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        /* Ajuste para pantallas pequeñas */
+        @media (max-width: 768px) {
+            .col-lg-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .row {
+                flex-direction: column;
+            }
+
+            .detalle-compra {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
-        <h2>Formulario de Envío de Producto</h2>
-        <form action="#" method="POST" id="formularioEnvio">
-            <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required pattern="[a-zA-Z ]{2,254}">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Detalle de Compra</h2>
+                <div class="detalle-compra">
+                    <div id="detalleCompra">
+                        <!-- Detalles del carrito de compras se llenarán dinámicamente -->
+                    </div>
+                </div>
+                <div class="total">
+                    <strong>Total:</strong> <span id="totalCompra">$0</span>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <span class="error-message" id="email-error"></span>
+
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2>Formulario de Envío de Producto</h2>
+                        <form id="formularioEnvio">
+                            <div class="form-group">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" id="nombre" name="nombre" class="form-control" required pattern="[a-zA-Z ]{2,254}">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                                <span class="error-message" id="email-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">Teléfono:</label>
+                                <input type="text" id="telefono" name="telefono" class="form-control" required maxlength="9">
+                            </div>
+                            <div class="form-group">
+                                <label for="region">Región:</label>
+                                <select id="region" name="region" class="form-control" required>
+                                    <option value="">Selecciona una región</option>
+                                    <option value="Arica y Parinacota">Arica y Parinacota</option>
+                                    <option value="Tarapacá">Tarapacá</option>
+                                    <option value="Antofagasta">Antofagasta</option>
+                                    <option value="Atacama">Atacama</option>
+                                    <option value="Coquimbo">Coquimbo</option>
+                                    <option value="Valparaíso">Valparaíso</option>
+                                    <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
+                                    <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
+                                    <option value="Maule">Maule</option>
+                                    <option value="Ñuble">Ñuble</option>
+                                    <option value="Biobío">Biobío</option>
+                                    <option value="La Araucanía">La Araucanía</option>
+                                    <option value="Los Ríos">Los Ríos</option>
+                                    <option value="Los Lagos">Los Lagos</option>
+                                    <option value="Aysén del General Carlos Ibáñez del Campo">Aysén del General Carlos Ibáñez del Campo</option>
+                                    <option value="Magallanes y de la Antártica Chilena">Magallanes y de la Antártica Chilena</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="ciudad">Ciudad:</label>
+                                <select id="ciudad" name="ciudad" class="form-control" required>
+                                    <option value="">Selecciona una ciudad</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="direccion">Dirección:</label>
+                                <textarea id="direccion" name="direccion" class="form-control" required></textarea>
+                            </div>
+                            <input type="submit" value="Comprobar Envío" class="btn btn-primary">
+                        </form>
+                        <div id="alerta" class="alert alert-success" style="display: none;"></div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="telefono">Teléfono:</label>
-                <input type="text" id="telefono" name="telefono" required maxlength="9">
+        </div>
+
+        <div class="row form-pago">
+            <div class="col-lg-6 offset-lg-6">
+                <h2>Formulario de Pago</h2>
+                <form id="formularioPago">
+                    <div class="form-group">
+                        <label for="card-holder-name">Nombre del Titular de la Tarjeta</label>
+                        <input type="text" id="card-holder-name" class="form-control" placeholder="Nombre y Apellido" required onkeypress="validateKeyPress(event)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="card-number">Número de Tarjeta</label>
+                        <input type="text" id="card-number" class="form-control" placeholder="Número de Tarjeta" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expiry-date">Fecha de Expiración (MM/YY)</label>
+                        <input type="text" id="expiry-date" class="form-control" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cvc">CVC</label>
+                        <input type="text" id="cvc" class="form-control" placeholder="CVC" maxlength="3" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Dirección de Facturación</label>
+                        <input type="text" id="address" class="form-control" placeholder="Dirección de facturación" required>
+                    </div>
+                    <button type="button" onclick="validateForm()" class="btn btn-primary">Pagar</button>
+                    <div class="payment-icons">
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-amex"></i>
+                        <i class="fab fa-cc-discover"></i>
+                    </div>
+                    <div id="error-message" class="error-message"></div>
+                    <div id="success-message" class="success-message"></div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="region">Región:</label>
-                <select id="region" name="region" required onchange="cargarCiudades()">
-                    <option value="">Selecciona una región</option>
-                    <option value="Arica y Parinacota">Arica y Parinacota</option>
-                    <option value="Tarapacá">Tarapacá</option>
-                    <option value="Antofagasta">Antofagasta</option>
-                    <option value="Atacama">Atacama</option>
-                    <option value="Coquimbo">Coquimbo</option>
-                    <option value="Valparaíso">Valparaíso</option>
-                    <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
-                    <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
-                    <option value="Maule">Maule</option>
-                    <option value="Ñuble">Ñuble</option>
-                    <option value="Biobío">Biobío</option>
-                    <option value="La Araucanía">La Araucanía</option>
-                    <option value="Los Ríos">Los Ríos</option>
-                    <option value="Los Lagos">Los Lagos</option>
-                    <option value="Aysén del General Carlos Ibáñez del Campo">Aysén del General Carlos Ibáñez del Campo
-                    </option>
-                    <option value="Magallanes y de la Antártica Chilena">Magallanes y de la Antártica Chilena</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="ciudad">Ciudad:</label>
-                <select id="ciudad" name="ciudad" required>
-                    <option value="">Selecciona una ciudad</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="direccion">Dirección:</label>
-                <textarea id="direccion" name="direccion" required></textarea>
-            </div>
-            <input type="submit" value="Comprobar Envío" id="comprobarEnvio">
-        </form>
+        </div>
+
+        <div class="action-buttons mt-4">
+            <a href="{% url 'TiendaOnline' %}" class="btn btn-primary">Volver a la Tienda</a>
+            <a id="confirmarPedidoBtn" href="{% url 'pago' %}" class="btn btn-primary ml-auto" disabled>Confirmar Pedido</a>
+        </div>
     </div>
+
     <script src="{% static 'aplicacion/js/envio.js' %}"></script>
+    <script src="{% static 'aplicacion/js/pago.js' %}"></script>
 </body>
 
 </html>
