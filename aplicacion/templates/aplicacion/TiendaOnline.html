@@ -6,19 +6,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ventas de Camisetas de Fútbol</title>
-    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="{% static "aplicacion/js/jquery-3.7.1.min.js" %}"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href='{% static "aplicacion/css/estilo.css" %}'> <!-- Corregida la ruta del archivo CSS -->
-    <script src='{% static "aplicacion/js/app.js" %}' async></script> <!-- Corregida la ruta del archivo JavaScript -->
-    <title>TheKeyFutbol | </title>
+    <link rel="stylesheet" href='{% static "aplicacion/css/estilo.css" %}'>
+    <script src='{% static "aplicacion/js/app.js" %}' async></script>
+    <title>TheKeyFutbol</title>
 </head>
 
 <body>
+    {% csrf_token %}
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -28,28 +29,29 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url "admin" %}">Admin</a>
+                        <a class="nav-link active" href="{% url 'admin' %}">Admin</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src='{% static "aplicacion/img/usu.png" %}' alt="Perfil" style="width: 30px; height: 30px;">
+                            <img src='{% static "aplicacion/img/usu.png" %}' alt="Perfil"
+                                style="width: 30px; height: 30px;">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-sm" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{% url "perfilusuario" %}">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="{% url "mispedidos" %}">Mis Pedidos</a></li>
+                            <li><a class="dropdown-item" href="{% url 'perfilusuario' %}">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'mispedidos' %}">Mis Pedidos</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="{% url "inicio" %}">Cerrar Sesión</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inicio' %}">Cerrar Sesión</a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
-    </nav>    
+    </nav>
 
     <header class="p-3 bg-dark text-white">
         <div id="locationData"></div>
@@ -57,21 +59,21 @@
 
     <section class="contenedor">
         <div class="contenedor-items">
-            {% for camiseta in camisetas %}
+            {% for producto in productos %}
             <div class="item">
-                <span class="titulo-item">{{ camiseta.nombre }}</span>
-                <img src="{{ camiseta.imagen.url }}" alt="" class="img-item">
-                <span class="precio-item">${{ camiseta.precio }}</span>
+                <span class="titulo-item">{{ producto.nombre }}</span>
+                <img src="{{ producto.imagen.url }}" alt="" class="img-item">
+                <span class="precio-item">${{ producto.precio }}</span>
                 <div class="form-group">
-                    <label for="talla-{{ camiseta.id }}">Selecciona la talla:</label>
-                    <select class="form-control" id="talla-{{ camiseta.id }}">
+                    <label for="talla-{{ producto.id }}">Selecciona la talla:</label>
+                    <select class="form-control" id="talla-{{ producto.id }}">
                         <option value="s">S</option>
                         <option value="m">M</option>
                         <option value="l">L</option>
                         <option value="xl">XL</option>
                     </select>
                 </div>
-                <button class="boton-item">Agregar al Carrito</button>
+                <button class="boton-item" data-id="{{ producto.id }}">Agregar al Carrito</button>
             </div>
             {% endfor %}
         </div>
