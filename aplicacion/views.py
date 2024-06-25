@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.models import User
-from .forms import CrearCuentaForm, CamisetaForm
-from .models import Camiseta
+from .forms import CrearCuentaForm
+from .models import Camiseta, CarritoItem
+from .forms import CamisetaForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def inicio(request):
@@ -17,8 +19,6 @@ def adUsuarios(request):
     return render(request, "aplicacion/adUsuarios.html")
 def adVentas(request):
     return render(request, "aplicacion/adVentas.html")
-def detalleCompra(request):
-    return render(request, "aplicacion/detalleCompra.html")
 def Envio(request):
     return render(request, "aplicacion/Envio.html")
 def factura(request):
@@ -31,7 +31,14 @@ def perfilusuario(request):
     return render(request, "aplicacion/perfilusuario.html")
 def TiendaOnline(request):
     camisetas = Camiseta.objects.all()
-    return render(request, "aplicacion/TiendaOnline.html", {'camisetas': camisetas})
+    carrito = CarritoItem.objects.filter(usuario=request.user)  # Filtrar por usuario autenticado
+    
+    context = {
+        'camisetas': camisetas,
+        'carrito': carrito,
+    }
+
+    return render(request, 'aplicacion/TiendaOnline.html', context)
 
 def crearcuenta(request):
     form=CrearCuentaForm()
@@ -88,3 +95,49 @@ def editarcamiseta(request, id):
         form = CamisetaForm(instance=camiseta)
     
     return render(request, 'aplicacion/editarcamiseta.html', {'form': form, 'camiseta': camiseta})
+@login_required
+@login_required
+def agregar_al_carrito(request, camiseta_id):
+    camiseta = get_object_or_404(Camiseta, pk=camiseta_id)
+    talla = request.POST.get('talla', 'S')  # Ajusta según cómo envías la talla
+    carrito_item, created = CarritoItem.objects.get_or_create(
+        usuario=request.user,
+        camiseta=camiseta,
+        talla=talla
+    )
+    if not created:
+        carrito_item.cantidad += 1
+        carrito_item.save()
+    return redirect('detalleCompra')
+
+@login_required
+def eliminar_del_carrito(request, item_id):
+    item = get_object_or_404(CarritoItem, pk=item_id)
+    item.delete()
+    return redirect('detalleCompra')
+
+@login_required
+def vaciar_carrito(request):
+    CarritoItem.objects.filter(usuario=request.user).delete()
+    return redirect('detalleCompra')
+
+@login_required
+def detalleCompra(request):
+    carrito_items = CarritoItem.objects.filter(usuario=request.user)
+    total_carrito = sum(item.subtotal for item in carrito_items)
+    context = {
+        'carrito_items': carrito_items,
+        'total_carrito': total_carrito
+    }
+    return render(request, 'aplicacion/detalleCompra.html', context)
+
+@login_required
+@login_required
+def detalleCompra(request):
+    carrito_items = CarritoItem.objects.filter(usuario=request.user)
+    total_carrito = sum(item.subtotal() for item in carrito_items)
+    context = {
+        'carrito_items': carrito_items,
+        'total_carrito': total_carrito
+    }
+    return render(request, 'aplicacion/detalleCompra.html', context)

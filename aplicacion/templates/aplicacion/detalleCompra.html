@@ -8,51 +8,45 @@
     <title>Detalle de Compra</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- Font Awesome para los iconos -->
-    <link rel="stylesheet" href="{% static 'aplicacion/css/detalleCompra.css' %}"> 
+    <link rel="stylesheet" href="{% static 'aplicacion/css/detalleCompra.css' %}">
 </head>
 
 <body>
     <div class="container">
-        <h1>Detalle de Compra</h1>
+        <h1>Carrito de</h1>
         <p><strong>Código de Pedido:</strong> #123456</p>
-        <table>
+        <table id="tabla-carrito">
             <thead>
                 <tr>
                     <th>Imagen</th>
-                    <th>Producto</th>
+                    <th>Nombre</th>
                     <th>Cantidad</th>
-                    <th>Precio Unitario (CLP)</th>
-                    <th>Total (CLP)</th>
-                    <th>Eliminar</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Las filas se llenarán dinámicamente -->
+            <tbody id="tbody-carrito">
+                {% for item in carrito_items %}
+                <tr>
+                    <td><img src="{{ item.camiseta.imagen.url }}" alt="{{ item.camiseta.nombre }}" style="width: 100px;"></td>
+                    <td>{{ item.camiseta.nombre }}</td>
+                    <td>{{ item.cantidad }}</td>
+                    <td>${{ item.camiseta.precio }}</td>
+                    <td>${{ item.subtotal }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="4"><strong>Total:</strong></td>
+                    <td>${{ total_carrito }}</td>
+                </tr>
             </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3" style="text-align: right;"><strong>Código de Descuento:</strong></td>
-                    <td colspan="2">
-                        <input type="text" id="discountCode" placeholder="Ingrese código">
-                        <button id="applyDiscountBtn" onclick="applyDiscount()">Aplicar Descuento</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
-                    <td id="totalPrice">$0</td>
-                    <td></td>
-                </tr>
-            </tfoot>
         </table>
-        <div class="action-buttons">
-            <a href="{% url 'TiendaOnline' %}"><button class="action-button">Volver a la Tienda</button></a>
-            <a href="{% url 'Envio' %}"><button id="comprobarEnvio" class="action-button">Comprobar Envío</button></a>
-        </div>
-    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
-    <!-- Font Awesome JS para los iconos -->
-    <script src="{% static 'aplicacion/js/detalleCompra.js' %}"></script>
+        <form action="{% url 'Envio' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Realizar Pago</button>
+        </form>
+    </div>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -51,8 +52,17 @@ class Camiseta(models.Model):
     tallas = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.nombre        
- 
+        return self.nombre
+         
+class CarritoItem(models.Model):
+    camiseta = models.ForeignKey(Camiseta, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+    talla = models.CharField(max_length=10)  # Talla del producto
 
-           
+    def subtotal(self):
+        return self.camiseta.precio * self.cantidad
+
+    def __str__(self):
+        return f"{self.cantidad} x {self.camiseta.nombre} (Talla: {self.talla})"
 
