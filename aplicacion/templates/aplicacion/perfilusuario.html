@@ -16,7 +16,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="TiendaOnline.html">Tienda Online</a>
+                        <a class="nav-link active" href="{% url 'TiendaOnline' %}">Tienda Online</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -38,39 +38,34 @@
         <h1>Mi Perfil</h1>
         <img src="{% static 'aplicacion/img/king.avif' %}" alt="Mi Foto de Perfil" class="profile-img">
         <div class="info">
-            <form id="perfil-form">
+            <form id="perfil-form" method="post">
+                {% csrf_token %}
                 <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre:</label>
-                    <input type="text" class="form-control" id="nombre" value="Usuario 1" disabled>
+                    <label for="nombre" class="form-label">Nombre de Usuario:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ user.username }}" required disabled>
                 </div>
                 <div class="mb-3">
                     <label for="edad" class="form-label">Edad:</label>
-                    <input type="text" class="form-control" id="edad" value="30 años" disabled>
+                    <input type="text" class="form-control" id="edad" name="edad" value="{{ perfil.edad }}" disabled>
                 </div>
                 <div class="mb-3">
                     <label for="ubicacion" class="form-label">Ubicación:</label>
-                    <input type="text" class="form-control" id="ubicacion" value="Concepcion" disabled>
+                    <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ perfil.ubicacion }}" disabled>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Correo Electrónico:</label>
-                    <input type="email" class="form-control" id="email" value="usuario1@example.com" disabled>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" disabled>
                 </div>
-                <!-- Campos para cambiar la contraseña -->
-                <div class="mb-3" id="password-fields" style="display: none;">
-                    <label for="contraseña-antigua" class="form-label">Contraseña Antigua:</label>
-                    <input type="password" class="form-control" id="contraseña-antigua" disabled>
+                <!-- Campos para cambiar la contraseña (inicialmente ocultos) -->
+                <div id="password-fields" style="display: none;">
+                    <div class="mb-3">
+                        <label for="contraseña-nueva" class="form-label">Nueva Contraseña:</label>
+                        <input type="password" class="form-control" id="contraseña-nueva" name="contraseña-nueva">
+                    </div>
                 </div>
-                <div class="mb-3" id="new-password-fields" style="display: none;">
-                    <label for="contraseña-nueva" class="form-label">Contraseña Nueva:</label>
-                    <input type="password" class="form-control" id="contraseña-nueva" disabled>
-                </div>
-                <div class="mb-3" id="confirm-password-fields" style="display: none;">
-                    <label for="confirmar-contraseña" class="form-label">Confirmar Contraseña Nueva:</label>
-                    <input type="password" class="form-control" id="confirmar-contraseña" disabled>
-                </div>
-                <button type="button" class="btn btn-primary" id="editar-btn">Editar</button>
-                <button type="submit" class="btn btn-success d-none" id="guardar-btn">Guardar Cambios</button>
-                <button type="button" class="btn btn-secondary d-none" id="cancelar-btn">Cancelar</button>
+                <button type="button" id="editar-btn" class="btn btn-primary">Editar</button>
+                <button type="submit" id="guardar-btn" class="btn btn-success d-none">Guardar Cambios</button>
+                <button type="button" id="cancelar-btn" class="btn btn-secondary d-none">Cancelar</button>
             </form>
             <!-- Mensaje de éxito oculto -->
             <div class="alert alert-success mt-3 d-none" id="exito-msg" role="alert">
