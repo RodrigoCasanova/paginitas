@@ -7,24 +7,6 @@ if (document.readyState == 'loading') {
 }
 
 function ready() {
-    let botonesEliminarItem = document.getElementsByClassName('btn-eliminar');
-    for (let i = 0; i < botonesEliminarItem.length; i++) {
-        let button = botonesEliminarItem[i];
-        button.addEventListener('click', eliminarItemCarrito);
-    }
-
-    let botonesSumarCantidad = document.getElementsByClassName('sumar-cantidad');
-    for (let i = 0; i < botonesSumarCantidad.length; i++) {
-        let button = botonesSumarCantidad[i];
-        button.addEventListener('click', sumarCantidad);
-    }
-
-    let botonesRestarCantidad = document.getElementsByClassName('restar-cantidad');
-    for (let i = 0; i < botonesRestarCantidad.length; i++) {
-        let button = botonesRestarCantidad[i];
-        button.addEventListener('click', restarCantidad);
-    }
-
     let botonesAgregarAlCarrito = document.getElementsByClassName('boton-item');
     for (let i = 0; i < botonesAgregarAlCarrito.length; i++) {
         let button = botonesAgregarAlCarrito[i];
@@ -46,7 +28,7 @@ function pagarClicked() {
     let itemsParaDetalle = [];
     carritoItems.forEach(item => {
         let titulo = item.querySelector('.carrito-item-titulo').innerText;
-        let cantidad = parseInt(item.querySelector('.carrito-item-cantidad').value);
+        let cantidad = parseInt(item.querySelector('.carrito-item-cantidad').textContent); // Usar textContent en lugar de value
         itemsParaDetalle.push({ titulo: titulo, cantidad: cantidad });
     });
 
@@ -85,7 +67,7 @@ function agregarItemAlCarrito(event) {
     }).then(data => {
         if (data.success) {
             // No mostrar alerta al agregar al carrito
-            agregarItemAlCarritoDOM(titulo, precio, imagenSrc);
+            agregarItemAlCarritoDOM(titulo, precio, imagenSrc, productoId); // Pasar productoId a la función
             hacerVisibleCarrito();
         } else {
             alert(data.message);
@@ -104,7 +86,7 @@ function hacerVisibleCarrito() {
     items.style.width = '60%';
 }
 
-function agregarItemAlCarritoDOM(titulo, precio, imagenSrc) {
+function agregarItemAlCarritoDOM(titulo, precio, imagenSrc, productoId) {
     let itemsCarrito = document.querySelector('.carrito-items');
 
     // Verificar si el item ya está en el carrito
@@ -119,108 +101,27 @@ function agregarItemAlCarritoDOM(titulo, precio, imagenSrc) {
     // Crear el nuevo item de carrito
     let item = document.createElement('div');
     item.classList.add('carrito-item');
+    item.setAttribute('data-producto-id', productoId); // Establecer el atributo data-producto-id
     let itemCarritoContenido = `
         <img src="${imagenSrc}" width="80px" alt="">
         <div class="carrito-item-detalles">
             <span class="carrito-item-titulo">${titulo}</span>
             <div class="selector-cantidad">
-                <i class="fa-solid fa-minus restar-cantidad"></i>
-                <input type="number" value="1" min="1" class="carrito-item-cantidad">
-                <i class="fa-solid fa-plus sumar-cantidad"></i>
+                <span class="carrito-item-cantidad">1</span> <!-- Mostrar cantidad como texto estático -->
             </div>
             <span class="carrito-item-precio">${precio}</span>
         </div>
-        <button class="btn-eliminar">
-            <i class="fa-solid fa-trash"></i>
-        </button>
     `;
     item.innerHTML = itemCarritoContenido;
     itemsCarrito.appendChild(item);
 
-    // Agregar event listeners a los botones del nuevo item
-    item.querySelector('.btn-eliminar').addEventListener('click', eliminarItemCarrito);
-    item.querySelector('.restar-cantidad').addEventListener('click', restarCantidad);
-    item.querySelector('.sumar-cantidad').addEventListener('click', sumarCantidad);
+    // Agregar event listener al botón de eliminar del nuevo item (no se agrega más)
 
     actualizarTotalCarrito();
-}
-
-function sumarCantidad(event) {
-    let buttonClicked = event.target;
-    let selector = buttonClicked.closest('.selector-cantidad');
-    let cantidadInput = selector.querySelector('.carrito-item-cantidad');
-    let cantidadActual = parseInt(cantidadInput.value);
-    cantidadActual++;
-    cantidadInput.value = cantidadActual;
-
-    actualizarTotalCarrito();
-}
-
-function restarCantidad(event) {
-    let buttonClicked = event.target;
-    let selector = buttonClicked.closest('.selector-cantidad');
-    let cantidadInput = selector.querySelector('.carrito-item-cantidad');
-    let cantidadActual = parseInt(cantidadInput.value);
-    cantidadActual--;
-    if (cantidadActual >= 1) {
-        cantidadInput.value = cantidadActual;
-        actualizarTotalCarrito();
-    }
 }
 
 function eliminarItemCarrito(event) {
-    let buttonClicked = event.target;
-    let item = buttonClicked.closest('.carrito-item');
-    if (!item) {
-        return;
-    }
-
-    let productoId = item.getAttribute('data-producto-id');  // Obtener el ID del producto
-
-    if (!productoId) {
-        console.error('No se encontró el atributo data-producto-id en el elemento .carrito-item');
-        return;
-    }
-
-    fetch(`/eliminar_del_carrito/${productoId}/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken,
-        },
-    }).then(response => {
-        if (response.ok) {
-            return response.json();
-        }
-        throw new Error('La respuesta de red no fue exitosa.');
-    }).then(data => {
-        if (data.success) {
-            // Eliminar visualmente el elemento del carrito
-            item.remove();
-            // Actualizar el total del carrito después de eliminar el elemento
-            actualizarTotalCarrito();
-            ocultarCarrito(); // Opcional: Ocultar el carrito si está vacío
-        } else {
-            alert(data.message);  // Mostrar mensaje de error si no se pudo eliminar
-        }
-    }).catch(error => {
-        console.error('Hubo un problema con la operación de fetch:', error);
-    });
-}
-
-
-function ocultarCarrito() {
-    let carritoItems = document.querySelector('.carrito-items');
-    if (!carritoItems || carritoItems.childElementCount === 0) {
-        let carrito = document.querySelector('.carrito');
-        carrito.style.marginRight = '-100%';
-        carrito.style.opacity = '0';
-
-        let items = document.querySelector('.contenedor-items');
-        if (items) {
-            items.style.width = '100%';
-        }
-    }
+    // No necesitas implementar nada aquí porque hemos eliminado el botón de eliminar
 }
 
 function actualizarTotalCarrito() {
@@ -229,7 +130,7 @@ function actualizarTotalCarrito() {
     carritoItems.forEach(item => {
         let precioElemento = item.querySelector('.carrito-item-precio');
         let precio = parseFloat(precioElemento.innerText.replace('$', ''));
-        let cantidadItem = parseInt(item.querySelector('.carrito-item-cantidad').value);
+        let cantidadItem = parseInt(item.querySelector('.carrito-item-cantidad').textContent); // Usar textContent en lugar de value
         total += precio * cantidadItem;
     });
     total = Math.round(total * 100) / 100;
@@ -246,4 +147,18 @@ function limpiarCarrito() {
         carritoItems.removeChild(carritoItems.firstChild);
     }
     actualizarTotalCarrito();
+}
+
+function ocultarCarrito() {
+    let carritoItems = document.querySelector('.carrito-items');
+    if (!carritoItems || carritoItems.childElementCount === 0) {
+        let carrito = document.querySelector('.carrito');
+        carrito.style.marginRight = '-100%';
+        carrito.style.opacity = '0';
+
+        let items = document.querySelector('.contenedor-items');
+        if (items) {
+            items.style.width = '100%';
+        }
+    }
 }
