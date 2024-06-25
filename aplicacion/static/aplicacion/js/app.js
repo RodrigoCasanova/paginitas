@@ -7,11 +7,7 @@ if (document.readyState == 'loading') {
 }
 
 function ready() {
-    let botonesEliminarItem = document.getElementsByClassName('btn-eliminar');
-    for (let i = 0; i < botonesEliminarItem.length; i++) {
-        let button = botonesEliminarItem[i];
-        button.addEventListener('click', eliminarItemCarrito);
-    }
+   
 
     let botonesSumarCantidad = document.getElementsByClassName('sumar-cantidad');
     for (let i = 0; i < botonesSumarCantidad.length; i++) {
@@ -84,9 +80,12 @@ function agregarItemAlCarrito(event) {
         throw new Error('La respuesta de red no fue exitosa.');
     }).then(data => {
         if (data.success) {
-            // No mostrar alerta al agregar al carrito
+            // Actualizar visualmente el carrito
             agregarItemAlCarritoDOM(titulo, precio, imagenSrc);
             hacerVisibleCarrito();
+
+            // Actualizar el carrito según la respuesta del servidor
+            actualizarCarritoDesdeServidor();
         } else {
             alert(data.message);
         }
@@ -169,12 +168,12 @@ function restarCantidad(event) {
 }
 
 function eliminarItemCarrito(event) {
-    let buttonClicked = event.target;
-    let item = buttonClicked.closest('.carrito-item');
-    if (!item) {
-        return;
-    }
-
+    let buttonClicked = event.target.closest('.carrito-item');
+    buttonClicked.remove();  // Elimina solo el ítem específico
+    actualizarTotalCarrito();
+    ocultarCarrito(); // Verifica si el carrito necesita ser ocultado
+}
+/* 
     let productoId = item.getAttribute('data-producto-id');  // Obtener el ID del producto
 
     if (!productoId) {
@@ -206,7 +205,7 @@ function eliminarItemCarrito(event) {
     }).catch(error => {
         console.error('Hubo un problema con la operación de fetch:', error);
     });
-}
+} */
 
 
 function ocultarCarrito() {
@@ -245,5 +244,44 @@ function limpiarCarrito() {
     while (carritoItems.firstChild) {
         carritoItems.removeChild(carritoItems.firstChild);
     }
+    actualizarTotalCarrito();
+}
+function eliminarItemCarrito(event) {
+    let buttonClicked = event.target.closest('.carrito-item');
+    buttonClicked.remove();  // Elimina solo el ítem específico
+    actualizarTotalCarrito();
+
+    // Actualizar el carrito según la respuesta del servidor
+    actualizarCarritoDesdeServidor();
+}
+
+// Función para actualizar el carrito desde el servidor
+function actualizarCarritoDesdeServidor() {
+    fetch('/obtener_carrito/', {
+        method: 'GET',
+    }).then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error('La respuesta de red no fue exitosa.');
+    }).then(data => {
+        // Actualizar la interfaz según el estado del carrito obtenido
+        actualizarInterfazConCarrito(data.carrito);
+    }).catch(error => {
+        console.error('Hubo un problema al obtener el carrito desde el servidor:', error);
+    });
+}
+
+// Función para actualizar la interfaz con el carrito recibido del servidor
+function actualizarInterfazConCarrito(carrito) {
+    // Limpiar el carrito actual en la interfaz
+    limpiarCarrito();
+
+    // Agregar cada item del carrito recibido a la interfaz
+    carrito.forEach(item => {
+        agregarItemAlCarritoDOM(item.titulo, item.precio, item.imagenSrc);
+    });
+
+    // Actualizar el total del carrito
     actualizarTotalCarrito();
 }
