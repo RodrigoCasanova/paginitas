@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from .forms import CrearCuentaForm, CamisetaForm
-from .models import Camiseta, UserProfile
+from .models import Camiseta, UserProfile, Carrito, CarritoItem
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+import json
 # Create your views here.
 def inicio(request):
     return render(request, "aplicacion/inicio.html")
@@ -47,8 +50,6 @@ def eliminar_usuario(request, user_id):
     return redirect("adUsuarios")
 def adVentas(request):
     return render(request, "aplicacion/adVentas.html")
-def detalleCompra(request):
-    return render(request, "aplicacion/detalleCompra.html")
 def Envio(request):
     return render(request, "aplicacion/Envio.html")
 def factura(request):
@@ -95,9 +96,48 @@ def perfilusuario(request):
 
     return render(request, 'aplicacion/perfilusuario.html', {'user': user, 'perfil': perfil})
 def TiendaOnline(request):
-    camisetas = Camiseta.objects.all()
-    return render(request, "aplicacion/TiendaOnline.html", {'camisetas': camisetas})
+    camiseta = Camiseta.objects.all()
+    context = {'productos': camiseta}
+    return render(request, 'aplicacion/TiendaOnline.html', context)
+@login_required
+def agregar_al_carrito(request, camiseta_id):
+    if request.method == 'POST':
+        camiseta = get_object_or_404(Camiseta, id=camiseta_id)
+        carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+        carrito_item, created = CarritoItem.objects.get_or_create(carrito=carrito, producto=camiseta)
 
+        if not created:
+            carrito_item.cantidad += 1
+        else:
+            carrito_item.cantidad = 1
+
+        carrito_item.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
+
+@login_required
+def detalleCompra(request):
+    carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+    carrito_items = CarritoItem.objects.filter(carrito=carrito)
+    context = {'carrito_items': carrito_items}
+    return render(request, "aplicacion/detalleCompra.html", context)
+@require_POST
+def eliminar_del_carrito(request, item_id):
+    item = get_object_or_404(CarritoItem, id=item_id)
+    item.delete()
+    return JsonResponse({'status': 'success'})
+
+@require_POST
+def actualizar_cantidad(request, item_id):
+    item = get_object_or_404(CarritoItem, id=item_id)
+    data = json.loads(request.body)
+    nueva_cantidad = data.get('cantidad')
+    if nueva_cantidad is not None:
+        item.cantidad = nueva_cantidad
+        item.save()
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Cantidad no proporcionada'}, status=400)
 def crearcuenta(request):
     form=CrearCuentaForm()
     datos={

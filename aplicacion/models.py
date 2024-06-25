@@ -61,4 +61,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username 
+    
+class Carrito(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
+class CarritoItem(models.Model):
+    carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Camiseta, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
