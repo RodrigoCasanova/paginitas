@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from .forms import CrearCuentaForm, CamisetaForm
-from .models import Camiseta
-
+from .models import Camiseta, UserProfile
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 # Create your views here.
 def inicio(request):
     return render(request, "aplicacion/inicio.html")
@@ -56,8 +57,43 @@ def mispedidos(request):
     return render(request, "aplicacion/mispedidos.html")
 def pago(request):
     return render(request, "aplicacion/pago.html")
+@login_required
 def perfilusuario(request):
-    return render(request, "aplicacion/perfilusuario.html")
+    user = request.user
+    try:
+        perfil = UserProfile.objects.get(user=user)
+    except UserProfile.DoesNotExist:
+        perfil = UserProfile(user=user)
+
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        nombre = request.POST.get('nombre')
+        edad = request.POST.get('edad')
+        ubicacion = request.POST.get('ubicacion')
+        email = request.POST.get('email')
+        contraseña_nueva = request.POST.get('contraseña-nueva')
+
+        # Actualizar los atributos del usuario y del perfil
+        user.username = nombre  # Actualizar el nombre de usuario
+
+        perfil.edad = edad
+        perfil.ubicacion = ubicacion
+
+        # Si el email es diferente al actual y no está en uso por otro usuario
+        if email != user.email and not User.objects.filter(email=email).exists():
+            user.email = email
+
+        # Cambiar la contraseña si se proporcionó una nueva
+        if contraseña_nueva:
+            user.set_password(contraseña_nueva)
+
+        user.save()
+        perfil.save()
+        messages.success(request, 'Perfil actualizado correctamente.')
+
+        return redirect('perfilusuario')
+
+    return render(request, 'aplicacion/perfilusuario.html', {'user': user, 'perfil': perfil})
 def TiendaOnline(request):
     camisetas = Camiseta.objects.all()
     return render(request, "aplicacion/TiendaOnline.html", {'camisetas': camisetas})
