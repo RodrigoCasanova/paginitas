@@ -1,4 +1,4 @@
-from .views import agregar_al_carrito, agregar_usuario, crear_orden_compra, editar_usuario, eliminar_del_carrito, eliminar_usuario, admin1 ,inicio,adPedidos,adTienda,adUsuarios,adVentas,detalleCompra,Envio,factura,mispedidos,pago, pago1,perfilusuario,TiendaOnline, crearcuenta, agregarcamiseta, editarcamiseta, eliminarcamiseta,actualizar_cantidad
+from .views import agregar_al_carrito, agregar_usuario, crear_orden_compra, editar_usuario, eliminar_del_carrito, eliminar_usuario, admin1 ,inicio,adPedidos,adTienda,adUsuarios,adVentas,detalleCompra,Envio,mispedidos,pago, pago1,perfilusuario,TiendaOnline, crearcuenta, agregarcamiseta, editarcamiseta, eliminarcamiseta,actualizar_cantidad, ver_factura
 from django.urls import include, path
 from . import views
 
@@ -11,7 +11,6 @@ urlpatterns = [
     path('adVentas/',adVentas,name='adVentas'),
     path('detalleCompra/',detalleCompra,name='detalleCompra'),
     path('Envio/',Envio,name='Envio'),
-    path('factura/',factura,name='factura'),
     path('mispedidos/',mispedidos,name='mispedidos'),
     path('pago/',pago,name='pago'),
     path('pago1/',pago1,name='pago1'),
@@ -33,4 +32,5 @@ urlpatterns = [
     path('editar_pedido/<int:pedido_id>/', views.editar_pedido, name='editar_pedido'),
     path('pedidos/eliminar/<int:pedido_id>/', views.eliminar_pedido, name='eliminar_pedido'),
     path('pedidos/obtener/<int:pedido_id>/', views.obtener_pedido, name='obtener_pedido'),
+    path('factura/<int:pedido_id>/', ver_factura, name='ver_factura'),
 ]

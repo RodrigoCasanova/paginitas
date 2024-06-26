@@ -69,10 +69,17 @@ def Envio(request):
     }
     
     return render(request, 'aplicacion/Envio.html', context)
-def factura(request):
-    return render(request, "aplicacion/factura.html")
+@login_required
+def ver_factura(request, pedido_id):
+    pedido = get_object_or_404(OrdenCompra, id=pedido_id, usuario=request.user)
+    
+    # Calcular el total de la orden sumando los subtotales de cada detalle
+    total = sum(detalle.cantidad * detalle.precio_unitario for detalle in pedido.detalles.all())
+    
+    return render(request, 'aplicacion/ver_factura.html', {'pedido': pedido, 'total': total})
 def mispedidos(request):
-    return render(request, "aplicacion/mispedidos.html")
+    pedidos = OrdenCompra.objects.filter(usuario=request.user).prefetch_related('detalles')
+    return render(request, "aplicacion/mispedidos.html", {'pedidos': pedidos})
 def pago(request):
     return render(request, "aplicacion/pago.html")
 @login_required
