@@ -1,0 +1,137 @@
+/* Estilos para el total */
+h2#total {
+    font-size: 24px; /* Tamaño de la fuente */
+    color: #007bff; /* Color azul, puede ajustarse según tu preferencia */
+    margin-bottom: 20px; /* Espacio inferior */
+    border-bottom: 2px solid #007bff; /* Borde inferior */
+    padding-bottom: 5px; /* Espacio debajo del borde */
+}
+.container {
+    max-width: 100%;
+    margin-top: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-lg-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 15px;
+}
+
+.detalle-compra {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.producto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.product-image {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.total {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.alert {
+    margin-top: 20px;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+}
+
+.form-pago {
+    margin-top: 30px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.action-buttons a {
+    margin-left: 10px;
+}
+
+/* Estilos específicos para los formularios */
+
+form {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+form .form-group {
+    margin-bottom: 15px;
+}
+
+form label {
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    /* Eliminar el outline */
+    outline: none;
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+form .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+form .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 768px) {
+    .col-lg-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .row {
+        flex-direction: column;
+    }
+
+    .detalle-compra {
+        margin-bottom: 10px;
+    }
+}

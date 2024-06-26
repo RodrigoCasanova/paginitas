@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from .forms import CrearCuentaForm, CamisetaForm
-from .models import Camiseta, UserProfile, Carrito, CarritoItem
+from .models import Camiseta, UserProfile, Carrito, CarritoItem, OrdenCompra, DetalleOrdenCompra
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 def inicio(request):
     return render(request, "aplicacion/inicio.html")
@@ -50,14 +51,82 @@ def eliminar_usuario(request, user_id):
     return redirect("adUsuarios")
 def adVentas(request):
     return render(request, "aplicacion/adVentas.html")
+@login_required
 def Envio(request):
-    return render(request, "aplicacion/Envio.html")
+    carrito = Carrito.objects.get(usuario=request.user)
+    carrito_items = CarritoItem.objects.filter(carrito=carrito)
+    
+    total_price = 0
+    for item in carrito_items:
+        total_price += item.producto.precio * item.cantidad
+    
+    context = {
+        'carrito_items': carrito_items,
+        'total_price': total_price,
+    }
+    
+    return render(request, 'aplicacion/Envio.html', context)
 def factura(request):
     return render(request, "aplicacion/factura.html")
 def mispedidos(request):
     return render(request, "aplicacion/mispedidos.html")
 def pago(request):
     return render(request, "aplicacion/pago.html")
+@login_required
+@csrf_exempt
+def crear_orden_compra(request):
+    if request.method == 'POST':
+        try:
+            # Obtener el carrito del usuario actual
+            carrito = Carrito.objects.get(usuario=request.user)
+            # Obtener los items del carrito
+            carrito_items = CarritoItem.objects.filter(carrito=carrito)
+
+            # Validar los campos del formulario
+            nombre = request.POST.get('nombre')
+            email = request.POST.get('email')
+            telefono = request.POST.get('telefono')
+            region = request.POST.get('region')
+            ciudad = request.POST.get('ciudad')
+            direccion = request.POST.get('direccion')
+            total = request.POST.get('total')
+
+            # Crear la orden de compra
+            orden = OrdenCompra.objects.create(
+                usuario=request.user,
+                nombre=nombre,
+                email=email,
+                telefono=telefono,
+                region=region,
+                ciudad=ciudad,
+                direccion=direccion,
+                total=total
+            )
+
+            # Crear los detalles de la orden de compra basados en los elementos del carrito
+            for item in carrito_items:
+                DetalleOrdenCompra.objects.create(
+                    orden_compra=orden,
+                    producto=item.producto,
+                    cantidad=item.cantidad,
+                    precio_unitario=item.producto.precio  # Asegúrate de obtener el precio del producto correctamente
+                )
+
+            # Limpiar el carrito después de crear la orden de compra
+            carrito_items.delete()
+
+            # Respuesta JSON indicando que la orden de compra se creó correctamente
+            return JsonResponse({'mensaje': 'Orden de compra creada correctamente.'})
+
+        except Carrito.DoesNotExist:
+            return JsonResponse({'error': 'No se encontró el carrito para este usuario.'}, status=404)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'Método no permitido.'}, status=405)
+def pago1(request):
+    return render(request, "aplicacion/pago1.html")
 @login_required
 def perfilusuario(request):
     user = request.user
