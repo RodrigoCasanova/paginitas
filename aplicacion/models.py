@@ -3,23 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 from django.utils import timezone
 # Create your models here.
-    
-class adUsuarios(models.Model):
-    id = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=50, null=False)
-    email = models.EmailField(error_messages='Ingrese nuevamente', null=False)
-    contraseña = models.CharField(max_length=20, null=False)    
-
-class adTienda(models.Model):
-    nombreCamiseta = models.CharField(max_length=100, null=False)  
-    imagen = models.ImageField()
-    precio = models.IntegerField()
-    cantidad = models.IntegerField()
-    tallas = models.CharField(max_length=2)
-
-class adVentas(models.Model):
-    ventas = models.IntegerField()
-    mes = models.CharField(max_length=20)   
+     
 class Camiseta(models.Model):
     id = models.IntegerField(primary_key=True, null=False)
     nombre = models.CharField(max_length=100)
