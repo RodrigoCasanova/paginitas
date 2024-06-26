@@ -1,57 +1,66 @@
-$(document).ready(function() {
-    let currentOrderId;
+// adpedidos.js
 
-    $('.edit-btn').click(function() {
-      currentOrderId = $(this).data('id');
-      let $row = $('tr[data-id="' + currentOrderId + '"]');
-      let username = $row.find('td:nth-child(2)').text();
-      let products = $row.find('td:nth-child(3)').text();
-      let address = $row.find('td:nth-child(4)').text();
-      let status = $row.find('.status').text();
-
-      $('#orderId').val(currentOrderId);
-      $('#username').val(username);
-      $('#products').val(products);
-      $('#address').val(address);
-      $('#status').val(status);
-
-      $('#editModal').modal('show');
-    });
-
-    $('.save-btn').click(function() {
-      let orderId = $('#orderId').val();
-      let username = $('#username').val();
-      let products = $('#products').val();
-      let address = $('#address').val();
-      let status = $('#status').val();
-    
-      // Validar que ningún campo esté vacío
-      if (username.trim() === '' || products.trim() === '' || address.trim() === '' || status.trim() === '') {
-        alert('Por favor completa todos los campos.');
-        return;
+$(document).ready(function () {
+  // Eliminar pedido
+  $('.delete-btn').on('click', function () {
+      var orderId = $(this).data('id');
+      if (confirm('¿Estás seguro de que deseas eliminar este pedido?')) {
+          $.ajax({
+              url: `/eliminar_pedido/${orderId}/`,
+              type: 'DELETE',
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function (result) {
+                  location.reload(); // Recarga la página para ver los cambios
+              }
+          });
       }
-    
-      let $row = $('tr[data-id="' + orderId + '"]');
-      $row.find('td:nth-child(2)').text(username);
-      $row.find('td:nth-child(3)').text(products);
-      $row.find('td:nth-child(4)').text(address);
-      $row.find('.status').text(status).removeClass().addClass('status').addClass(status);
-    
-      console.log("Guardar cambios para el pedido con ID: " + orderId);
-    
-      $('#editModal').modal('hide');
-    });
-    
-    $('.delete-btn').click(function() {
-      currentOrderId = $(this).closest('tr').data('id');
-      $('#deleteModal').modal('show');
-    });
-
-    $('.confirm-delete-btn').click(function() {
-      let orderId = currentOrderId;
-
-      $('tr[data-id="' + orderId + '"]').remove();
-
-      $('#deleteModal').modal('hide');
-    });
   });
+
+  // Manejar la edición del pedido
+  $('.edit-btn').on('click', function () {
+      var orderId = $(this).data('id');
+      // Obtener los datos del pedido y llenar el modal de edición
+      $.get(`/obtener_pedido/${orderId}/`, function (data) {
+          $('#orderId').val(data.id);
+          $('#username').val(data.usuario);
+          $('#products').val(data.productos);
+          $('#address').val(data.direccion);
+          $('#status').val(data.estado);
+      });
+  });
+
+  // Guardar cambios de edición
+  $('.save-btn').on('click', function () {
+      var orderId = $('#orderId').val();
+      $.ajax({
+          url: `/editar_pedido/${orderId}/`,
+          type: 'POST',
+          data: {
+              estado: $('#status').val(),  // Solo envía el campo de estado
+              csrfmiddlewaretoken: getCookie('csrftoken')  // Asegúrate de incluir el token CSRF
+          },
+          headers: { 'X-CSRFToken': getCookie('csrftoken') },
+          success: function (result) {
+              $('#editModal').modal('hide'); // Oculta el modal de edición
+              location.reload(); // Recarga la página para ver los cambios
+          }
+      });
+  });
+
+  // Función para obtener el valor del token CSRF desde las cookies
+  function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = cookies[i].trim();
+              // Busca el token CSRF por su nombre
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+});

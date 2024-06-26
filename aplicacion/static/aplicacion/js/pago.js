@@ -40,3 +40,24 @@ function validateKeyPress(event) {
         event.preventDefault();
     }
 }
+function submitPayment() {
+    // Validar los campos del formulario
+    if (validateForm()) {
+        // Si el formulario es válido, enviar la solicitud POST al servidor
+        var formData = $('#paymentForm').serialize(); // Capturar datos del formulario
+        $.ajax({
+            url: '{% url "crear_orden_compra" %}', // URL de la vista para crear la orden de compra
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                // Manejar la respuesta del servidor (por ejemplo, mostrar mensaje de éxito)
+                $('#success-message').text('Pedido creado exitosamente.');
+                // Redirigir o realizar más acciones según sea necesario
+            },
+            error: function(xhr, status, error) {
+                // Manejar errores de la solicitud AJAX
+                $('#error-message').text('Error al crear el pedido.');
+            }
+        });
+    }
+}

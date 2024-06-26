@@ -14,32 +14,32 @@
 <body>
     <div class="container">
         <h2>Página de Pago</h2>
-        <form action="{% url "pago1" %}">
+        <form id="paymentForm" method="POST" action="{% url 'pago1' %}">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="card-holder-name">Nombre del Titular de la Tarjeta</label>
-                <input type="text" id="card-holder-name" placeholder="Nombre y Apellido" required onkeypress="validateKeyPress(event)">
+                <input type="text" id="card-holder-name" name="card_holder_name" placeholder="Nombre y Apellido" required>
             </div>
             
             <div class="form-group">
                 <label for="card-number">Número de Tarjeta</label>
-                <input type="text" id="card-number" placeholder="Número de Tarjeta" required>
+                <input type="text" id="card-number" name="card_number" placeholder="Número de Tarjeta" required>
             </div>
             <div class="form-group">
                 <label for="expiry-date">Fecha de Expiración (MM/YY)</label>
-                <input type="text" id="expiry-date" placeholder="MM/YY" required>
+                <input type="text" id="expiry-date" name="expiry_date" placeholder="MM/YY" required>
             </div>
             <div class="form-group">
                 <label for="cvc">CVC</label>
-                <input type="text" id="cvc" placeholder="CVC" maxlength="3" required>
+                <input type="text" id="cvc" name="cvc" placeholder="CVC" maxlength="3" required>
             </div>
             <div class="form-group">
                 <label for="address">Dirección de Facturación</label>
-                <input type="text" id="address" placeholder="Dirección de facturación" required>
+                <input type="text" id="address" name="billing_address" placeholder="Dirección de facturación" required>
             </div>
-            <div>
-            <button type="button" onclick="validateForm()">Pagar</button>
-            <div id="data-url" data-pago-url="{% url 'pago1' %}"></div>
-            </div>
+            
+            <button type="button" onclick="submitPayment()">Pagar</button>
+            
             <div class="payment-icons">
                 <i class="fab fa-cc-visa"></i>
                 <i class="fab fa-cc-mastercard"></i>
@@ -49,8 +49,8 @@
             <div id="error-message" class="error-message"></div>
             <div id="success-message" class="success-message"></div>
             <div class="btn-group" style="margin-top: 20px;">
-                <a href="{% url "TiendaOnline" %}" class="btn btn-primary">Volver</a>
-                <a href="{% url "inicio" %}" class="btn btn-primary">Cerrar Sesión</a>
+                <a href="{% url 'TiendaOnline' %}" class="btn btn-primary">Volver</a>
+                <a href="{% url 'inicio' %}" class="btn btn-primary">Cerrar Sesión</a>
             </div>
         </form>
     </div>

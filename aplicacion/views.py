@@ -4,18 +4,20 @@ from .forms import CrearCuentaForm, CamisetaForm
 from .models import Camiseta, UserProfile, Carrito, CarritoItem, OrdenCompra, DetalleOrdenCompra
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
+
 # Create your views here.
 def inicio(request):
     return render(request, "aplicacion/inicio.html")
 def admin1(request):
     return render(request, "aplicacion/admin.html")
 def adPedidos(request):
-    return render(request, "aplicacion/adPedidos.html")
+    pedidos = OrdenCompra.objects.all()
+    return render(request, 'aplicacion/adPedidos.html', {'pedidos': pedidos})
 def adTienda(request):
     camisetas = Camiseta.objects.all()
     return render(request, "aplicacion/adTienda.html", {'camisetas': camisetas})
@@ -287,3 +289,39 @@ def admin(request):
     # Lógica para la página admin1
     return render(request, 'admin.html')
 
+
+def eliminar_pedido(request, pedido_id):
+    try:
+        pedido = OrdenCompra.objects.get(id=pedido_id)
+        pedido.delete()
+        return HttpResponse(status=204)
+    except OrdenCompra.DoesNotExist:
+        return HttpResponse(status=404)
+
+def obtener_pedido(request, pedido_id):
+    try:
+        pedido = OrdenCompra.objects.get(id=pedido_id)
+        detalles = ", ".join([detalle.producto.nombre for detalle in pedido.detalles.all()])
+        data = {
+            'id': pedido.id,
+            'usuario': pedido.usuario.username,
+            'productos': detalles,
+            'direccion': pedido.direccion,
+            'estado': 'en_camino'  # Cambia esto según tu lógica de estados
+        }
+        return JsonResponse(data)
+    except OrdenCompra.DoesNotExist:
+        return HttpResponse(status=404)
+
+def editar_pedido(request, pedido_id):
+    if request.method == 'POST' and request.is_ajax():
+        pedido = get_object_or_404(OrdenCompra, pk=pedido_id)
+        nuevo_estado = request.POST.get('estado', None)
+        if nuevo_estado:
+            pedido.estado = nuevo_estado
+            pedido.save()
+            return JsonResponse({'message': 'Pedido actualizado correctamente.'})
+        else:
+            return JsonResponse({'error': 'El campo de estado no puede estar vacío.'}, status=400)
+    else:
+        return JsonResponse({'error': 'No se permite esta solicitud.'}, status=403)
