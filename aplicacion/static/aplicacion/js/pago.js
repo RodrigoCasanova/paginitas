@@ -26,8 +26,12 @@ function validateForm() {
     } else {
         document.getElementById('success-message').innerHTML = "¡Pago exitoso!";
         document.getElementById('error-message').innerHTML = ""; 
+        const pagoUrl = document.getElementById('data-url').dataset.pagoUrl;
+        window.location.href = pagoUrl;
         return true;
     }
+
+
 }
 function validateKeyPress(event) {
     let keyCode = event.keyCode || event.which;

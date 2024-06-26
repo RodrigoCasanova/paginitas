@@ -55,7 +55,6 @@ class OrdenCompra(models.Model):
     region = models.CharField(max_length=100)
     ciudad = models.CharField(max_length=100)
     direccion = models.TextField()
-    total = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

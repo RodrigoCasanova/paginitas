@@ -14,7 +14,7 @@
 <body>
     <div class="container">
         <h2>Página de Pago</h2>
-        <form>
+        <form action="{% url "pago1" %}">
             <div class="form-group">
                 <label for="card-holder-name">Nombre del Titular de la Tarjeta</label>
                 <input type="text" id="card-holder-name" placeholder="Nombre y Apellido" required onkeypress="validateKeyPress(event)">
@@ -36,7 +36,10 @@
                 <label for="address">Dirección de Facturación</label>
                 <input type="text" id="address" placeholder="Dirección de facturación" required>
             </div>
+            <div>
             <button type="button" onclick="validateForm()">Pagar</button>
+            <div id="data-url" data-pago-url="{% url 'pago1' %}"></div>
+            </div>
             <div class="payment-icons">
                 <i class="fab fa-cc-visa"></i>
                 <i class="fab fa-cc-mastercard"></i>

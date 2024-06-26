@@ -89,7 +89,13 @@ def crear_orden_compra(request):
             region = request.POST.get('region')
             ciudad = request.POST.get('ciudad')
             direccion = request.POST.get('direccion')
-            total = request.POST.get('total')
+
+            # Imprimir los valores recibidos para depuración
+            print(f"Valores recibidos - Nombre: {nombre}, Email: {email}, Teléfono: {telefono}, Región: {region}, Ciudad: {ciudad}, Dirección: {direccion}")
+
+            # Verificar que todos los campos necesarios no sean None
+            if not all([nombre, email, telefono, region, ciudad, direccion]):
+                return JsonResponse({'error': 'Todos los campos son obligatorios.'}, status=400)
 
             # Crear la orden de compra
             orden = OrdenCompra.objects.create(
@@ -100,9 +106,7 @@ def crear_orden_compra(request):
                 region=region,
                 ciudad=ciudad,
                 direccion=direccion,
-                total=total
             )
-
             # Crear los detalles de la orden de compra basados en los elementos del carrito
             for item in carrito_items:
                 DetalleOrdenCompra.objects.create(
@@ -111,18 +115,21 @@ def crear_orden_compra(request):
                     cantidad=item.cantidad,
                     precio_unitario=item.producto.precio  # Asegúrate de obtener el precio del producto correctamente
                 )
-
+            
             # Limpiar el carrito después de crear la orden de compra
             carrito_items.delete()
 
             # Respuesta JSON indicando que la orden de compra se creó correctamente
-            return JsonResponse({'mensaje': 'Orden de compra creada correctamente.'})
+            return redirect('pago')
+
 
         except Carrito.DoesNotExist:
             return JsonResponse({'error': 'No se encontró el carrito para este usuario.'}, status=404)
 
         except Exception as e:
+            print(f"Error: {e}")  # Imprimir el error para depuración
             return JsonResponse({'error': str(e)}, status=500)
+        
 
     return JsonResponse({'error': 'Método no permitido.'}, status=405)
 def pago1(request):

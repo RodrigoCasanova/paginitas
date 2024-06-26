@@ -37,53 +37,14 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h2>Formulario de Envío de Producto</h2>
-                        <form id="formularioEnvio">
-                            <div class="form-group">
-                                <label for="nombre">Nombre:</label>
-                                <input type="text" id="nombre" name="nombre" class="form-control" required pattern="[a-zA-Z ]{2,254}">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email:</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
-                                <span class="error-message" id="email-error"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="telefono">Teléfono:</label>
-                                <input type="text" id="telefono" name="telefono" class="form-control" required maxlength="9">
-                            </div>
-                            <div class="form-group">
-                                <label for="region">Región:</label>
-                                <select id="region" name="region" class="form-control" required>
-                                    <option value="">Selecciona una región</option>
-                                    <option value="Arica y Parinacota">Arica y Parinacota</option>
-                                    <option value="Tarapacá">Tarapacá</option>
-                                    <option value="Antofagasta">Antofagasta</option>
-                                    <option value="Atacama">Atacama</option>
-                                    <option value="Coquimbo">Coquimbo</option>
-                                    <option value="Valparaíso">Valparaíso</option>
-                                    <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
-                                    <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
-                                    <option value="Maule">Maule</option>
-                                    <option value="Ñuble">Ñuble</option>
-                                    <option value="Biobío">Biobío</option>
-                                    <option value="La Araucanía">La Araucanía</option>
-                                    <option value="Los Ríos">Los Ríos</option>
-                                    <option value="Los Lagos">Los Lagos</option>
-                                    <option value="Aysén del General Carlos Ibáñez del Campo">Aysén del General Carlos Ibáñez del Campo</option>
-                                    <option value="Magallanes y de la Antártica Chilena">Magallanes y de la Antártica Chilena</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="ciudad">Ciudad:</label>
-                                <select id="ciudad" name="ciudad" class="form-control" required>
-                                    <option value="">Selecciona una ciudad</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="direccion">Dirección:</label>
-                                <textarea id="direccion" name="direccion" class="form-control" required></textarea>
-                            </div>
-                            <input type="submit" value="Pagar" class="btn btn-primary">
+                        <form id="orderForm" method="POST" action="/crear_orden/">
+                            <input type="text" name="nombre" placeholder="Nombre" required>
+                            <input type="email" name="email" placeholder="Email" required>
+                            <input type="text" name="telefono" placeholder="Teléfono" required>
+                            <input type="text" name="region" placeholder="Región" required>
+                            <input type="text" name="ciudad" placeholder="Ciudad" required>
+                            <input type="text" name="direccion" placeholder="Dirección" required>
+                            <button type="submit" >Crear Orden</button>
                         </form>
                         <div id="alerta" class="alert alert-success" style="display: none;"></div>
                     </div>
@@ -94,6 +55,7 @@
         <div class="action-buttons mt-4">
             <a href="{% url 'TiendaOnline' %}" class="btn btn-primary">Volver a la Tienda</a>
             <div id="data-url" data-pago-url="{% url 'pago' %}"></div>
+            
         </div>
     </div>
 
