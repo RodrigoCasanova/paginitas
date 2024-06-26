@@ -72,7 +72,8 @@ def Envio(request):
 def factura(request):
     return render(request, "aplicacion/factura.html")
 def mispedidos(request):
-    return render(request, "aplicacion/mispedidos.html")
+    pedidos = OrdenCompra.objects.filter(usuario=request.user).prefetch_related('detalles')
+    return render(request, "aplicacion/mispedidos.html", {'pedidos': pedidos})
 def pago(request):
     return render(request, "aplicacion/pago.html")
 @login_required
