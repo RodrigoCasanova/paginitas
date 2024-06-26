@@ -1,29 +1,9 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
+from django.utils import timezone
 # Create your models here.
-
-class TiendaOnline(models.Model):
-    precio = models.IntegerField()
-    cantidad = models.IntegerField()
-
-
-class perfilusuario(models.Model):
-    edad = models.IntegerField()
-    ubicacion = models.CharField(max_length=50)
-
-class detalleCompra(models.Model):
-    cod_pedido = models.IntegerField()
     
-class Envio(models.Model):
-    nombre = models.CharField(max_length=50, null=False)  
-    email = models.EmailField(error_messages='Ingrese nuevamente', null=False)
-    telefono = models.IntegerField()
-    
-class admin1(models.Model):
-    usuario = models.CharField(max_length=50, null=False)
-    fecha = models.DateField(auto_now=True, auto_now_add=False)
-
 class adUsuarios(models.Model):
     id = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=50, null=False)
@@ -36,9 +16,6 @@ class adTienda(models.Model):
     precio = models.IntegerField()
     cantidad = models.IntegerField()
     tallas = models.CharField(max_length=2)
-
-class adPedidos(models.Model):
-    estado = models.CharField(max_length=20, null=False)    
 
 class adVentas(models.Model):
     ventas = models.IntegerField()
@@ -69,3 +46,25 @@ class CarritoItem(models.Model):
     carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE)
     producto = models.ForeignKey(Camiseta, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
+
+class OrdenCompra(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=255)
+    email = models.EmailField()
+    telefono = models.CharField(max_length=20)
+    region = models.CharField(max_length=100)
+    ciudad = models.CharField(max_length=100)
+    direccion = models.TextField()
+    fecha_creacion = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Orden de compra {self.id} de {self.usuario.username}"
+
+class DetalleOrdenCompra(models.Model):
+    orden_compra = models.ForeignKey(OrdenCompra, related_name='detalles', on_delete=models.CASCADE)
+    producto = models.ForeignKey(Camiseta, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"Detalle de compra para {self.orden_compra.id}: Producto {self.producto.nombre}"

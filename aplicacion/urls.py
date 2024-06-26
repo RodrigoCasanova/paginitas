@@ -1,4 +1,5 @@
 from .views import agregar_al_carrito, agregar_usuario, editar_usuario, eliminar_del_carrito, eliminar_usuario, inicio,admin1,adPedidos,adTienda,adUsuarios,adVentas,detalleCompra,Envio,factura,mispedidos,pago,perfilusuario,TiendaOnline, crearcuenta, agregarcamiseta, editarcamiseta, eliminarcamiseta,actualizar_cantidad
+from .views import agregar_al_carrito, agregar_usuario, crear_orden_compra, editar_usuario, eliminar_del_carrito, eliminar_usuario, inicio,admin,adPedidos,adTienda,adUsuarios,adVentas,detalleCompra,Envio,factura,mispedidos,pago, pago1,perfilusuario,TiendaOnline, crearcuenta, agregarcamiseta, editarcamiseta, eliminarcamiseta,actualizar_cantidad
 from django.urls import include, path
 from . import views
 
@@ -14,6 +15,7 @@ urlpatterns = [
     path('factura/',factura,name='factura'),
     path('mispedidos/',mispedidos,name='mispedidos'),
     path('pago/',pago,name='pago'),
+    path('pago1/',pago1,name='pago1'),
     path('perfilusuario/',perfilusuario,name='perfilusuario'),
     path('TiendaOnline/',TiendaOnline,name='TiendaOnline'),
     path('crearcuenta/', crearcuenta, name= 'crearcuenta'),
@@ -28,4 +30,5 @@ urlpatterns = [
     path('eliminar_del_carrito/<int:item_id>/', eliminar_del_carrito, name='eliminar_del_carrito'),
     path('actualizar_cantidad/<int:item_id>/', actualizar_cantidad, name='actualizar_cantidad'),
     path('admin1/login/', views.admin_login, name='admin_login'),
+    path('crear_orden/', crear_orden_compra, name='crear_orden_compra'),
 ]
