@@ -2,15 +2,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from .forms import CrearCuentaForm, CamisetaForm
 from .models import Camiseta, UserProfile, Carrito, CarritoItem
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
+from django.contrib.auth import authenticate, login
 # Create your views here.
 def inicio(request):
     return render(request, "aplicacion/inicio.html")
-def admin(request):
+def admin1(request):
     return render(request, "aplicacion/admin.html")
 def adPedidos(request):
     return render(request, "aplicacion/adPedidos.html")
@@ -193,3 +194,20 @@ def editarcamiseta(request, id):
         form = CamisetaForm(instance=camiseta)
     
     return render(request, 'aplicacion/editarcamiseta.html', {'form': form, 'camiseta': camiseta})
+def admin_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_superuser:
+            login(request, user)
+            return redirect('admin1')  # Asegúrate de tener esta URL definida correctamente en urls.py
+        else:
+            messages.error(request, 'Credenciales inválidas para administrador.')
+    
+    return render(request, 'aplicacion/admin_login.html')
+
+def admin(request):
+    # Lógica para la página admin1
+    return render(request, 'admin.html')
+
