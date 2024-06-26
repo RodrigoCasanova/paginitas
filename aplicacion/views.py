@@ -290,38 +290,34 @@ def admin(request):
     return render(request, 'admin.html')
 
 
+
+@login_required
+def obtener_pedido(request, pedido_id):
+    pedido = get_object_or_404(OrdenCompra, id=pedido_id)
+    data = {
+        'id': pedido.id,
+        'estado': pedido.estado
+    }
+    return JsonResponse(data)
+
+@require_POST
+def editar_pedido(request, pedido_id):
+    pedido = get_object_or_404(OrdenCompra, id=pedido_id)
+    
+    nuevo_estado = request.POST.get('estado', None)
+    
+    if nuevo_estado is not None:
+        pedido.estado = nuevo_estado
+        pedido.save()
+        return JsonResponse({'estado': pedido.estado})
+    else:
+        return JsonResponse({'error': 'No se proporcionó un estado válido'}, status=400)
+
+@require_POST
 def eliminar_pedido(request, pedido_id):
     try:
         pedido = OrdenCompra.objects.get(id=pedido_id)
         pedido.delete()
-        return HttpResponse(status=204)
+        return JsonResponse({'message': 'Pedido eliminado correctamente.'})
     except OrdenCompra.DoesNotExist:
-        return HttpResponse(status=404)
-
-def obtener_pedido(request, pedido_id):
-    try:
-        pedido = OrdenCompra.objects.get(id=pedido_id)
-        detalles = ", ".join([detalle.producto.nombre for detalle in pedido.detalles.all()])
-        data = {
-            'id': pedido.id,
-            'usuario': pedido.usuario.username,
-            'productos': detalles,
-            'direccion': pedido.direccion,
-            'estado': 'en_camino'  # Cambia esto según tu lógica de estados
-        }
-        return JsonResponse(data)
-    except OrdenCompra.DoesNotExist:
-        return HttpResponse(status=404)
-
-def editar_pedido(request, pedido_id):
-    if request.method == 'POST' and request.is_ajax():
-        pedido = get_object_or_404(OrdenCompra, pk=pedido_id)
-        nuevo_estado = request.POST.get('estado', None)
-        if nuevo_estado:
-            pedido.estado = nuevo_estado
-            pedido.save()
-            return JsonResponse({'message': 'Pedido actualizado correctamente.'})
-        else:
-            return JsonResponse({'error': 'El campo de estado no puede estar vacío.'}, status=400)
-    else:
-        return JsonResponse({'error': 'No se permite esta solicitud.'}, status=403)
+        return JsonResponse({'error': 'El pedido no existe.'}, status=404)

@@ -1,66 +1,85 @@
-// adpedidos.js
+$(document).ready(function() {
+    // Cargar estados editados al cargar la página
+    var pedidosEstado = JSON.parse(localStorage.getItem('pedidosEstado')) || {};
+    $.each(pedidosEstado, function(pedidoId, estado) {
+        $('#estadoPedido_' + pedidoId).text(estado);
+    });
 
-$(document).ready(function () {
-  // Eliminar pedido
-  $('.delete-btn').on('click', function () {
-      var orderId = $(this).data('id');
-      if (confirm('¿Estás seguro de que deseas eliminar este pedido?')) {
-          $.ajax({
-              url: `/eliminar_pedido/${orderId}/`,
-              type: 'DELETE',
-              headers: { 'X-CSRFToken': getCookie('csrftoken') },
-              success: function (result) {
-                  location.reload(); // Recarga la página para ver los cambios
-              }
-          });
-      }
-  });
+    // Función para guardar el estado en LocalStorage
+    function guardarEstadoLocalStorage(pedidoId, estado) {
+        pedidosEstado[pedidoId.toString()] = estado;
+        localStorage.setItem('pedidosEstado', JSON.stringify(pedidosEstado));
+    }
 
-  // Manejar la edición del pedido
-  $('.edit-btn').on('click', function () {
-      var orderId = $(this).data('id');
-      // Obtener los datos del pedido y llenar el modal de edición
-      $.get(`/obtener_pedido/${orderId}/`, function (data) {
-          $('#orderId').val(data.id);
-          $('#username').val(data.usuario);
-          $('#products').val(data.productos);
-          $('#address').val(data.direccion);
-          $('#status').val(data.estado);
-      });
-  });
+    // Función para obtener el estado desde LocalStorage
+    function obtenerEstadoLocalStorage(pedidoId) {
+        return pedidosEstado[pedidoId.toString()];
+    }
 
-  // Guardar cambios de edición
-  $('.save-btn').on('click', function () {
-      var orderId = $('#orderId').val();
-      $.ajax({
-          url: `/editar_pedido/${orderId}/`,
-          type: 'POST',
-          data: {
-              estado: $('#status').val(),  // Solo envía el campo de estado
-              csrfmiddlewaretoken: getCookie('csrftoken')  // Asegúrate de incluir el token CSRF
-          },
-          headers: { 'X-CSRFToken': getCookie('csrftoken') },
-          success: function (result) {
-              $('#editModal').modal('hide'); // Oculta el modal de edición
-              location.reload(); // Recarga la página para ver los cambios
-          }
-      });
-  });
+    // Manejar la apertura del modal de edición
+    $('#editModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var pedidoId = button.data('id');
+        var estado = button.data('estado');
 
-  // Función para obtener el valor del token CSRF desde las cookies
-  function getCookie(name) {
-      var cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-          var cookies = document.cookie.split(';');
-          for (var i = 0; i < cookies.length; i++) {
-              var cookie = cookies[i].trim();
-              // Busca el token CSRF por su nombre
-              if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-              }
-          }
-      }
-      return cookieValue;
-  }
+        var modal = $(this);
+        modal.find('#editPedidoId').val(pedidoId);
+        modal.find('#editEstado').val(estado);
+    });
+
+    // Manejar el envío del formulario de edición
+    $('#editPedidoForm').submit(function(event) {
+        event.preventDefault();
+        
+        var pedidoId = $('#editPedidoId').val();
+        var estado = $('#editEstado').val();
+
+        $.ajax({
+            url: '/editar_pedido/' + pedidoId + '/',
+            method: 'POST',
+            data: {
+                'estado': estado,
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+            },
+            success: function(response) {
+                // Actualizar la interfaz si se guarda correctamente
+                $('#estadoPedido_' + pedidoId).text(estado);
+                guardarEstadoLocalStorage(pedidoId, estado);
+                $('#editModal').modal('hide');
+            },
+            error: function(response) {
+                alert('Error al actualizar el pedido');
+            }
+        });
+    });
+
+    // Manejar la apertura del modal de eliminación
+    $('#deleteModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var pedidoId = button.data('id');
+        
+        var modal = $(this);
+        modal.find('#deletePedidoId').val(pedidoId);
+    });
+
+    // Confirmar eliminación
+    $('#confirmDeleteBtn').click(function() {
+        var pedidoId = $('#deletePedidoId').val();
+
+        $.ajax({
+            url: '/eliminar_pedido/' + pedidoId + '/',
+            method: 'POST',
+            data: {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+            },
+            success: function(response) {
+                // Eliminar la fila de la tabla si se elimina correctamente
+                $('#pedido' + pedidoId).remove();
+                $('#deleteModal').modal('hide');
+            },
+            error: function(response) {
+                alert('Error al eliminar el pedido');
+            }
+        });
+    });
 });
