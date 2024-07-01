@@ -13,14 +13,22 @@ from django.contrib.auth import authenticate, login
 # Create your views here.
 def inicio(request):
     return render(request, "aplicacion/inicio.html")
+@login_required
+@permission_required('aplicacion.add_permission') 
 def admin1(request):
     return render(request, "aplicacion/admin.html")
+@login_required
+@permission_required('aplicacion.add_permission') 
 def adPedidos(request):
     pedidos = OrdenCompra.objects.all()
     return render(request, 'aplicacion/adPedidos.html', {'pedidos': pedidos})
+@login_required
+@permission_required('aplicacion.add_permission') 
 def adTienda(request):
     camisetas = Camiseta.objects.all()
     return render(request, "aplicacion/adTienda.html", {'camisetas': camisetas})
+@login_required
+@permission_required('aplicacion.add_permission') 
 def adUsuarios(request):
     usuarios = User.objects.all()
     return render(request, "aplicacion/adUsuarios.html", {"usuarios": usuarios})
