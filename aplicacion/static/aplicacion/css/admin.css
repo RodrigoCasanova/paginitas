@@ -44,3 +44,33 @@ h1 {
         padding: 15px;
     }
 }
+.economic-indicators {
+    margin-top: 30px; /* Ajusta el margen superior según sea necesario */
+    text-align: center;  
+}
+
+.economic-indicators h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.economic-indicators .card {
+    display: inline-block;
+    margin: 0 10px; 
+    width: 200px; 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.economic-indicators .card .card-header {
+    background-color: #007bff; 
+    color: #fff; 
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 5px 5px 0 0;
+}
+
+.economic-indicators .card .card-body {
+    font-size: 14px;
+}
