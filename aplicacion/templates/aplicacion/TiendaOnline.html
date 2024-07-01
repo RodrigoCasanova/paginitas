@@ -28,7 +28,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                </ul>
+                    <ul class="navbar-nav">
+                        {% if perms.aplicacion.add_permission %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'adPedidos' %}" style="color: white;">Administrador</a>
+                        </li>
+                        {% endif %}
+                    </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -51,6 +57,7 @@
                         <img src="{% static 'aplicacion/img/carrito2.png' %}" alt="Carrito" style="width: 30px; height: 30px;" id="carrito-icon">
                     </a>
                 </ul>
+                
             </div>
         </div>
     </nav>

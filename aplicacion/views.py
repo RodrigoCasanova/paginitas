@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from .forms import CrearCuentaForm, CamisetaForm
 from .models import Camiseta, UserProfile, Carrito, CarritoItem, OrdenCompra, DetalleOrdenCompra
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -328,3 +328,12 @@ def eliminar_pedido(request, pedido_id):
         return JsonResponse({'message': 'Pedido eliminado correctamente.'})
     except OrdenCompra.DoesNotExist:
         return JsonResponse({'error': 'El pedido no existe.'}, status=404)
+    
+@login_required
+@permission_required('aplicacion.add_permission') 
+def darchar(request):
+    usuarios=User.objects.all()
+    datos={
+        "usuarios":usuarios
+    }
+    return render(request, 'aplicacion/adPedidos.html', datos)
