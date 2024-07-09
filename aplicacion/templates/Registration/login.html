@@ -12,6 +12,51 @@
 </head>
 
 <body>
+    {% csrf_token %}
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <ul class="navbar-nav">
+                        {% if perms.aplicacion.add_permission %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin1' %}" style="color: white;">Administrador</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item ">
+                        <a class="nav-link " href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src='{% static "aplicacion/img/usu.png" %}' alt="Perfil"
+                                style="width: 30px; height: 30px;">
+                        </a>
+                           
+                            <li><a class="dropdown-item" href="{% url 'mispedidos' %}">Mis Pedidos</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link text-bg-primary" href="">{{user.username}}</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'salir' %}">Cerrar Sesión</a></li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link text-bg-primary" href="{% url 'login' %}">Iniciar Sesión</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
 
     <div class="container mt-3">
         <h3>INICIO DE SESIÓN</h3>

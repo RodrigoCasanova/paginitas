@@ -57,7 +57,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'paginita.urls'
 LOGIN_REDIRECT_URL="/TiendaOnline/"
 
-LOGOUT_REDIRECT_URL="/"
+LOGOUT_REDIRECT_URL="/inicio"
 
 TEMPLATES = [
     {

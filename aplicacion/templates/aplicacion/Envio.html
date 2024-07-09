@@ -10,9 +10,48 @@
     <link rel="stylesheet" href="{% static 'aplicacion/css/pago.css' %}">
     <link rel="stylesheet" href="{% static 'aplicacion/css/envio1.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
+    {% csrf_token %}
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    {% if perms.aplicacion.add_permission %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin1' %}" style="color: white;">Administrador</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mispedidos' %}">Mis Pedidos</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'salir' %}">Cerrar Sesión</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-bg-primary" href="{% url 'login' %}">Iniciar Sesión</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <a class="nav-link" href="{% url 'detalleCompra' %}">
+                    <img src="{% static 'aplicacion/img/carritoo.png' %}" alt="Carrito" style="width: 30px; height: 30px;">
+                </a>
+                <a class="nav-link" href="{% url 'perfilusuario' %}">
+                    <img src="{% static 'aplicacion/img/usu.png' %}" alt="Perfil" style="width: 30px; height: 30px;">
+                </a>
+            </div>
+        </div>
+    </nav>
     <div class="container">
         <div class="row">
             <div class="col-lg-6">

@@ -9,6 +9,8 @@ from django.views.decorators.http import require_POST
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+
 
 # Create your views here.
 def inicio(request):
@@ -32,7 +34,8 @@ def adTienda(request):
 def adUsuarios(request):
     usuarios = User.objects.all()
     return render(request, "aplicacion/adUsuarios.html", {"usuarios": usuarios})
-
+@login_required
+@permission_required('aplicacion.add_permission') 
 def agregar_usuario(request):
     if request.method == "POST":
         username = request.POST.get("nombre")
@@ -46,7 +49,8 @@ def agregar_usuario(request):
         return redirect("adUsuarios")
     
     return render(request, "aplicacion/agregar_usuario.html")
-
+@login_required
+@permission_required('aplicacion.add_permission') 
 def editar_usuario(request, user_id):
     usuario = get_object_or_404(User, id=user_id)
     if request.method == "POST":
@@ -55,11 +59,14 @@ def editar_usuario(request, user_id):
         usuario.save()
         return redirect("adUsuarios")
     return render(request, "aplicacion/editar_usuario.html", {"usuario": usuario})
-
+@login_required
+@permission_required('aplicacion.add_permission') 
 def eliminar_usuario(request, user_id):
     usuario = get_object_or_404(User, id=user_id)
     usuario.delete()
     return redirect("adUsuarios")
+@login_required
+@permission_required('aplicacion.add_permission') 
 def adVentas(request):
     return render(request, "aplicacion/adVentas.html")
 @login_required
@@ -85,9 +92,11 @@ def ver_factura(request, pedido_id):
     total = sum(detalle.cantidad * detalle.precio_unitario for detalle in pedido.detalles.all())
     
     return render(request, 'aplicacion/ver_factura.html', {'pedido': pedido, 'total': total})
+@login_required
 def mispedidos(request):
     pedidos = OrdenCompra.objects.filter(usuario=request.user).prefetch_related('detalles')
     return render(request, "aplicacion/mispedidos.html", {'pedidos': pedidos})
+@login_required
 def pago(request):
     return render(request, "aplicacion/pago.html")
 @login_required
@@ -118,7 +127,6 @@ def crear_orden_compra(request):
             # Crear la orden de compra
             orden = OrdenCompra.objects.create(
                 usuario=request.user,
-                nombre=nombre,
                 email=email,
                 telefono=telefono,
                 region=region,
@@ -171,7 +179,12 @@ def perfilusuario(request):
         # Actualizar los atributos del usuario y del perfil
         user.username = nombre  # Actualizar el nombre de usuario
 
-        perfil.edad = edad
+        # Validar que la edad sea un número antes de asignarla
+        if edad.isdigit():  # Verificar si edad es un dígito
+            perfil.edad = int(edad)
+        else:
+            perfil.edad = None  # Si no es un dígito, dejarlo como None
+
         perfil.ubicacion = ubicacion
 
         # Si el email es diferente al actual y no está en uso por otro usuario
@@ -255,6 +268,8 @@ def crearcuenta(request):
                 "form":form
             }
     return render(request, "registration/crearcuenta.html", datos)
+@login_required
+@permission_required('aplicacion.add_permission') 
 def agregarcamiseta(request):
     if request.method == 'POST':    
         form = CamisetaForm(request.POST, request.FILES)
@@ -265,7 +280,9 @@ def agregarcamiseta(request):
     else:
         form = CamisetaForm()
     
-    return render(request, "aplicacion/agregarcamiseta.html", {'form': form})   
+    return render(request, "aplicacion/agregarcamiseta.html", {'form': form})  
+@login_required
+@permission_required('aplicacion.add_permission')  
 def eliminarcamiseta(request, id):
     camiseta = get_object_or_404(Camiseta, id=id)
 
@@ -275,6 +292,8 @@ def eliminarcamiseta(request, id):
         return redirect('adTienda')  # Redirige a la página principal de administración
 
     return render(request, 'aplicacion/eliminarcamiseta.html', {'camiseta': camiseta}) 
+@login_required
+@permission_required('aplicacion.add_permission') 
 def editarcamiseta(request, id):
     camiseta = get_object_or_404(Camiseta, id=id)
     
@@ -287,6 +306,8 @@ def editarcamiseta(request, id):
         form = CamisetaForm(instance=camiseta)
     
     return render(request, 'aplicacion/editarcamiseta.html', {'form': form, 'camiseta': camiseta})
+@login_required
+@permission_required('aplicacion.add_permission') 
 def admin_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -300,6 +321,8 @@ def admin_login(request):
     
     return render(request, 'aplicacion/admin_login.html')
 
+@login_required
+@permission_required('aplicacion.add_permission') 
 def admin(request):
     # Lógica para la página admin1
     return render(request, 'admin.html')
@@ -345,3 +368,6 @@ def darchar(request):
         "usuarios":usuarios
     }
     return render(request, 'aplicacion/adPedidos.html', datos)
+def salir(request):
+    logout(request)
+    return redirect(to = 'inicio')

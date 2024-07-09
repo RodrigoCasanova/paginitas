@@ -28,6 +28,18 @@ h1 {
     margin: 50px auto;
     text-align: center;
 }
+.navbar-nav .nav-item {
+    margin-right: 15px;
+}
+.navbar-nav .nav-link {
+    color: white !important;
+}
+.navbar-nav .nav-link img {
+    margin-left: 10px;
+}
+.navbar-nav .nav-link-text {
+    margin-right: 10px;
+}
 
 .container h2 {
     margin-bottom: 20px;

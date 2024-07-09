@@ -24,9 +24,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'agregarcamiseta' %}">Agregar Camiseta</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'inicio' %}">Cerrar Sesión</a>
+                    <a class="nav-link" href="{% url 'salir' %}">Cerrar Sesión</a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link text-bg-primary" href="{% url 'login' %}">Iniciar Sesión</a>
+                </li>
+                {% endif %}
+            </ul>
             </ul>
         </div>
     </nav>

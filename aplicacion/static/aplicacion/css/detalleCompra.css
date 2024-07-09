@@ -133,3 +133,13 @@ th {
         /* Elimina el ancho máximo para las celdas en pantallas pequeñas */
     }
 }
+body {
+    margin: 0;
+    padding: 0;
+}
+.navbar {
+    margin-bottom: 0;
+}
+.container {
+    margin-top: 60px;
+}

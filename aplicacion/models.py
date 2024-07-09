@@ -15,7 +15,7 @@ class Camiseta(models.Model):
         return self.nombre        
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    edad = models.IntegerField()
+    edad = models.IntegerField(blank=True, null=True)
     ubicacion = models.CharField(max_length=100)
 
     # Puedes añadir más campos según tus necesidades
@@ -32,8 +32,8 @@ class CarritoItem(models.Model):
     cantidad = models.PositiveIntegerField(default=1)
 
 class OrdenCompra(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=255)
+    usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    nombre_usuario = models.CharField(max_length=150, null=True, blank=True)
     email = models.EmailField()
     telefono = models.CharField(max_length=20)
     region = models.CharField(max_length=100)
@@ -41,9 +41,15 @@ class OrdenCompra(models.Model):
     direccion = models.TextField()
     fecha_creacion = models.DateTimeField(default=timezone.now)
 
-    def __str__(self):
-        return f"Orden de compra {self.id} de {self.usuario.username}"
+    def save(self, *args, **kwargs):
+        if self.usuario and not self.nombre_usuario:
+            self.nombre_usuario = self.usuario.username
+        super(OrdenCompra, self).save(*args, **kwargs)
 
+    def __str__(self):
+        if self.nombre_usuario:
+            return f"Orden de compra {self.id} de {self.nombre_usuario}"
+        return f"Orden de compra {self.id} de usuario eliminado"
 class DetalleOrdenCompra(models.Model):
     orden_compra = models.ForeignKey(OrdenCompra, related_name='detalles', on_delete=models.CASCADE)
     producto = models.ForeignKey(Camiseta, on_delete=models.CASCADE)
