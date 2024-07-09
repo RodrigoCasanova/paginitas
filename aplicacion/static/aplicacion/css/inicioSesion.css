@@ -1,6 +1,12 @@
 body {
-    background-color: #000;
-    color: #fff;
+    background-image: url('imgcss/5572419.jpg');
+    background-repeat: no-repeat; /* Evitar la repetición de la imagen */
+    background-size: cover; /* Cubrir completamente el área visible */
+    background-attachment: fixed; /* Fijar el fondo en su posición */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #fff; /* Cambiar el color del texto a blanco */
 }
 
 .container {
